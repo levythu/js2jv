@@ -27,11 +27,11 @@ public abstract class JsVar
 	//Unary operator for everyone====
 	public JsBoolean Exclaimation() throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(!this.ToBoolean()._getValue());
 	}
 	public JsBoolean ToBoolean() throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(true);
 	}
 	//================================
 	//Binary operator for everyone====
@@ -65,14 +65,14 @@ public abstract class JsVar
 	}
 	public JsBoolean And(JsVar name) throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(this.ToBoolean()._getValue() && name.ToBoolean()._getValue());
 	}
 	public JsBoolean Or(JsVar name) throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(this.ToBoolean()._getValue() || name.ToBoolean()._getValue());
 	}
 	public JsBoolean Xor(JsVar name) throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(this.ToBoolean()._getValue() ^ name.ToBoolean()._getValue());
 	}
 }

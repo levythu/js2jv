@@ -28,6 +28,6 @@ public class JsObject extends JsReference
 	public void SetProperty(JsVar name, JsVar value) throws Exception
 	{
 		String query=name.ToString()._getValue();
-		map.put(query, value);	
+		map.put(query, value.Assign());	
 	}
 }
