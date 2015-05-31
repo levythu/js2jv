@@ -73,4 +73,22 @@ public class JsString extends JsValue
 	{
 		return new JsString(value+name.ToString()._getValue());
 	}
+	
+	public JsVar GetProperty(JsVar name) throws Exception
+	{
+		if (name instanceof JsNumber)
+		{
+			int id;
+			if (name instanceof JsIntegral)
+				id=(int)((JsIntegral)name)._getValue();
+			else if (name instanceof JsFloat)
+				id=(int)((JsFloat)name)._getValue();
+			else throw new LogicBomb();
+			if (id>=0 && id<value.length())
+				return new JsString(value.substring(id, id+1));
+			else
+				return new JsUndefined();
+		}
+		throw new Exception();
+	}
 }
