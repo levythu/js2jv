@@ -2,7 +2,7 @@ package jsFoundation.jsType;
 
 import jsFoundation.jsException.JsInvalidOperatorException;
 
-public class JsFunction extends JsReference
+public abstract class JsFunction extends JsReference
 {
 	public String TypeOf() 
 	{
@@ -14,8 +14,5 @@ public class JsFunction extends JsReference
 		return "function(){...}";
 	}
 	
-	public JsVar Execute(JsList args) throws JsInvalidOperatorException
-	{
-		return new JsUndefined();
-	}
+	public abstract JsVar Execute(JsList args) throws JsInvalidOperatorException;
 }
