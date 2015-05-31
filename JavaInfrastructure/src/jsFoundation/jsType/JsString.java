@@ -2,21 +2,27 @@ package jsFoundation.jsType;
 
 public class JsString extends JsValue
 {
+	private String value;
+	public String _getValue()
+	{
+		return value;
+	}
+	public JsString(String val)
+	{
+		value=val;
+	}
+	
+	
 	public JsValue Clone() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new JsString(value);
 	}
-
-	public String TypeOf() 
+	public JsString TypeOf() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new JsString("string");
 	}
-
-	public String ToString() 
+	public JsString ToString() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return new JsString(value);
 	}
 }

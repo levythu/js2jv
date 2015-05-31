@@ -7,16 +7,13 @@ public class JsBoolean extends JsValue
 	{
 		value=val;
 	}
-	
 	public JsValue Clone() {
 		return new JsBoolean(value);
 	}
-	
-	public String ToString() {
-		return Boolean.toString(value);
+	public JsString ToString() {
+		return new JsString(Boolean.toString(value));
 	}
-
-	public String TypeOf() {
-		return "boolean";
+	public JsString TypeOf() {
+		return new JsString("boolean");
 	}
 }

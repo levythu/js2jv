@@ -2,16 +2,14 @@ package jsFoundation.jsType;
 
 public class JsUndefined extends JsVar
 {
-	public String TypeOf() 
+	public JsString TypeOf() 
 	{
-		return "undefined";
+		return new JsString("undefined");
 	}
-
-	public String ToString() 
+	public JsString ToString() 
 	{
-		return "undefined";		//WARN: in real JS this behavior leads to error.
+		return new JsString("undefined");		//WARN: in real JS this behavior leads to error.
 	}
-
 	public JsVar Assign() 
 	{
 		return this;

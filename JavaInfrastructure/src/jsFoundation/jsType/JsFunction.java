@@ -1,18 +1,16 @@
 package jsFoundation.jsType;
 
-import jsFoundation.jsException.JsInvalidOperatorException;
+//import jsFoundation.jsException.JsInvalidOperatorException;
 
 public abstract class JsFunction extends JsReference
 {
-	public String TypeOf() 
+	public JsString TypeOf() 
 	{
-		return "function";
+		return new JsString("function");
 	}
-	
-	public String ToString() 
+	public JsString ToString() 
 	{
-		return "function(){...}";
+		return new JsString("function(){...}");
 	}
-	
-	public abstract JsVar Execute(JsList args) throws JsInvalidOperatorException;
+	public abstract JsVar Execute(JsList args) throws Exception;
 }

@@ -7,12 +7,10 @@ public class JsFloat extends JsNumber
 	{
 		value=val;
 	}
-	
 	public JsValue Clone() {
 		return new JsFloat(value);
 	}
-	
-	public String ToString() {
-		return Double.toString(value);
+	public JsString ToString() {
+		return new JsString(Double.toString(value));
 	}
 }

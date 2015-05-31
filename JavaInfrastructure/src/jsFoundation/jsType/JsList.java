@@ -2,12 +2,11 @@ package jsFoundation.jsType;
 
 public class JsList extends JsReference
 {
-	public String TypeOf() 
+	public JsString TypeOf() 
 	{
-		return "object";
+		return new JsString("object");
 	}
-
-	public String ToString() 
+	public JsString ToString() //WARN: not implemented yet.
 	{
 		return null;
 	}

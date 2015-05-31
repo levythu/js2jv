@@ -7,12 +7,12 @@ public class JsIntegral extends JsNumber
 	{
 		value=val;
 	}
-	
-	public JsValue Clone() {
+	public JsValue Clone() 
+	{
 		return new JsIntegral(value);
 	}
-
-	public String ToString() {
-		return Long.toString(value);
+	public JsString ToString() 
+	{
+		return new JsString(Long.toString(value));
 	}
 }
