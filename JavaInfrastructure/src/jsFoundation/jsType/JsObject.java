@@ -1,6 +1,6 @@
 package jsFoundation.jsType;
 
-public class JsList extends JsReference
+public class JsObject extends JsReference
 {
 	public String TypeOf() 
 	{
@@ -9,6 +9,6 @@ public class JsList extends JsReference
 
 	public String ToString() 
 	{
-		return null;
+		return "[object Object]";
 	}
 }
