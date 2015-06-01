@@ -6,6 +6,7 @@ public abstract class JsVar
 {
 	public abstract JsString TypeOf();
 	public abstract JsString ToString();
+	@Deprecated
 	public abstract JsVar Assign();
 	//The following method is used-specified, but to keep weak-type feature we need to provide a default implementation.
 	//For function====================
@@ -15,7 +16,7 @@ public abstract class JsVar
 	}
 	//================================
 	//For string/object/list==========
-	public JsVar GetProperty(JsVar name) throws Exception
+	public JsVar GetProperty(JsVar name) throws Exception	//Please use assign artificially.
 	{
 		throw new JsInvalidOperatorException();
 	}
