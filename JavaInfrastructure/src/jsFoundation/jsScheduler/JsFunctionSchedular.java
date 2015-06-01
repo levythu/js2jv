@@ -5,6 +5,17 @@ import jsFoundation.jsType.*;
 
 public class JsFunctionSchedular
 {
+	private static JsFunctionSchedular GlobalSchedular;
+	public static JsFunctionSchedular GetGlobalSchedular()
+	{
+		return GlobalSchedular;
+	}
+	public synchronized static void initSchedular()	//Be sure to run it to init.
+	{
+		if (GlobalSchedular!=null) return;
+			GlobalSchedular=new JsFunctionSchedular();
+	}
+	
 	private LinkedList<JsFunction> FunctionQueue;
 	private JsCarryThread Carrier;
 	

@@ -11,7 +11,7 @@ public abstract class JsTask extends Thread
 	{
 		if (TaskContent())
 		{
-			//WARN
+			JsFunctionSchedular.GetGlobalSchedular().StashOrLaunchTask(callback);
 		}
 	}
 }
