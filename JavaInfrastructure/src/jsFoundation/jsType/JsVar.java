@@ -10,7 +10,7 @@ public abstract class JsVar
 	public abstract JsVar Assign();
 	//The following method is used-specified, but to keep weak-type feature we need to provide a default implementation.
 	//For function====================
-	public JsVar Execute(JsList args) throws Exception
+	public JsVar Execute() throws Exception
 	{
 		throw new JsInvalidOperatorException();
 	}

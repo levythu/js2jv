@@ -4,6 +4,7 @@ package jsFoundation.jsType;
 
 public abstract class JsFunction extends JsReference
 {
+	JsList Args;
 	public JsString TypeOf() 
 	{
 		return new JsString("function");
@@ -12,5 +13,5 @@ public abstract class JsFunction extends JsReference
 	{
 		return new JsString("function(){...}");
 	}
-	public abstract JsVar Execute(JsList args) throws Exception;
+	public abstract JsVar Execute() throws Exception;
 }
