@@ -1,5 +1,6 @@
 package jsFoundation.jsType;
 
+import jsFoundation.JsClosure;
 import jsFoundation.jsException.*;
 
 public abstract class JsVar 
@@ -10,7 +11,7 @@ public abstract class JsVar
 	public abstract JsVar Assign();
 	//The following method is used-specified, but to keep weak-type feature we need to provide a default implementation.
 	//For function====================
-	public JsVar Execute() throws Exception
+	public JsVar Execute(JsVar _this, JsList para, JsClosure closureInfo) throws Exception
 	{
 		throw new JsInvalidOperatorException();
 	}

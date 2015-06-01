@@ -1,7 +1,6 @@
 package jsFoundation.jsScheduler;
 
 import java.util.*; 
-import jsFoundation.jsType.*;
 
 public class JsFunctionSchedular
 {
@@ -16,16 +15,16 @@ public class JsFunctionSchedular
 			GlobalSchedular=new JsFunctionSchedular();
 	}
 	
-	private LinkedList<JsFunction> FunctionQueue;
+	private LinkedList<JsDelegate> FunctionQueue;
 	private JsCarryThread Carrier;
 	
 	public JsFunctionSchedular()
 	{
-		FunctionQueue=new LinkedList<JsFunction>();
+		FunctionQueue=new LinkedList<JsDelegate>();
 		Carrier=new JsCarryThread(this);
 		Carrier.start();
 	}
-	public synchronized JsFunction StashOrLaunchTask(JsFunction funcName)	//null input for launch
+	public synchronized JsDelegate StashOrLaunchTask(JsDelegate funcName)	//null input for launch
 	{
 		if (funcName==null)
 		{

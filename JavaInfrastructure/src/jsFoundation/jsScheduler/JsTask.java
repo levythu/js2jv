@@ -1,11 +1,9 @@
 package jsFoundation.jsScheduler;
 
-import jsFoundation.jsType.*;
-
 public abstract class JsTask extends Thread
 {
 	protected abstract boolean TaskContent();
-	protected JsFunction callback;
+	protected JsDelegate callback;
 	
 	public void run() 
 	{

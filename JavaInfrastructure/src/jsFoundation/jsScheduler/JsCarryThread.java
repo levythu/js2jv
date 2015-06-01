@@ -1,7 +1,5 @@
 package jsFoundation.jsScheduler;
 
-import jsFoundation.jsType.*;
-
 public class JsCarryThread extends Thread
 {
 	private JsFunctionSchedular schedular;
@@ -12,7 +10,7 @@ public class JsCarryThread extends Thread
 	}
 	public void run()
 	{
-		JsFunction func;
+		JsDelegate func;
 		while (true)
 		{
 			func=schedular.StashOrLaunchTask(null);
@@ -29,7 +27,7 @@ public class JsCarryThread extends Thread
 			{
 				try
 				{
-					func.Execute();
+					func.delegateContent.Execute(func._this, func.para, func.closureInfo);
 				}
 				catch (Throwable e)
 				{
