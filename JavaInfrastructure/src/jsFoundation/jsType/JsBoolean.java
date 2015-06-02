@@ -32,7 +32,7 @@ public class JsBoolean extends JsValue
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
 		if (name instanceof JsNumber)
-			return new JsBoolean(((JsNumber)name).Evaluate()!=0);
+			return new JsBoolean((((JsNumber)name).Evaluate()!=0)==value);
 		if (name instanceof JsBoolean)
 			return IdenticalTo(name);
 		return name.EqualTo(this);
