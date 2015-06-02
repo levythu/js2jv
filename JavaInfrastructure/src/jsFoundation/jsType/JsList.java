@@ -122,4 +122,21 @@ public class JsList extends JsReference
 			return "Js.List.push";
 		}
 	}
+	public static class JsList_Pop extends JsFunction
+	{
+		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		{
+			if (!(_this instanceof JsList))
+				throw new JsWrongThisofNativeFunction();
+			JsList thisObject=(JsList)_this;
+			if (thisObject.value.isEmpty())
+				return new JsUndefined();
+			else
+				return thisObject.value.remove(thisObject.value.size()-1);
+		}
+		public String GetCanonicalName() 
+		{
+			return "Js.List.pop";
+		}
+	}
 }

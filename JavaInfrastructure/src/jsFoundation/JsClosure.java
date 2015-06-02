@@ -3,7 +3,7 @@ package jsFoundation;
 import java.util.HashMap;
 import jsFoundation.jsType.*;
 
-public abstract class JsClosure
+public class JsClosure
 {
 	private HashMap<String, JsVar> variableList;
 	private JsClosure ParentClosure;

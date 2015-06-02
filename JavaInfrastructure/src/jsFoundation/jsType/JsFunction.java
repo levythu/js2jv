@@ -25,7 +25,8 @@ public abstract class JsFunction extends JsReference
 	}
 	public JsVar Execute(JsVar _this, JsList para, JsClosure closureInfo) throws Exception
 	{
-		return ExecuteDetail(_this,para,closureInfo);
+		JsClosure newClosure=new JsClosure(closureInfo);
+		return ExecuteDetail(_this,para,newClosure);
 	}
 	
 	public abstract String GetCanonicalName();
