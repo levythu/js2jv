@@ -11,8 +11,8 @@ public class UnitCaseTest4Type
 		JsVar num0dot5=new JsFloat(0.5);
 		JsVar num2=new JsIntegral(2);
 		JsVar num0=new JsIntegral(0);
-		JsBoolean boolTrue=new JsBoolean(true);
-		JsBoolean boolFalse=new JsBoolean(false);
+		JsVar boolTrue=new JsBoolean(true);
+		JsVar boolFalse=new JsBoolean(false);
 		
 		JsVar result;
 		result=num5.Plus(num0dot5);
@@ -34,5 +34,10 @@ public class UnitCaseTest4Type
 		result=result.IdenticalTo(boolFalse);
 		result=result.EqualTo(num0dot5);
 		result=result.EqualTo(num0);
+		//========================
+		JsVar strHaha=new JsString("Haha");
+		result=num5.Plus(strHaha);
+		result=strHaha.Plus(boolFalse);
+		result=boolTrue.Plus(strHaha);
 	}
 }

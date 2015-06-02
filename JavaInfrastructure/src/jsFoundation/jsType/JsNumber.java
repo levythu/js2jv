@@ -39,7 +39,10 @@ public abstract class JsNumber extends JsValue
 	public JsVar Plus(JsVar name) throws Exception
 	{
 		if (!(name instanceof JsNumber))
-			return name.Plus(this);
+			if (name instanceof JsString)
+				return ((JsString)name).BePlus(this);
+			else
+				return name.Plus(this);
 		if ((this instanceof JsIntegral) && (name instanceof JsIntegral))
 			return new JsIntegral(((JsIntegral)this)._getValue()+((JsIntegral)name)._getValue());
 		return new JsFloat(this.Evaluate()+((JsNumber)name).Evaluate());

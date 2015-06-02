@@ -58,7 +58,7 @@ public class JsBoolean extends JsValue
 	public JsVar Plus(JsVar name) throws Exception
 	{
 		if ((name instanceof JsString))
-			return name.Plus(this);
+			return ((JsString)name).BePlus(this);
 		throw new JsInvalidOperatorException();
 	}
 	public JsVar Minus(JsVar name) throws Exception

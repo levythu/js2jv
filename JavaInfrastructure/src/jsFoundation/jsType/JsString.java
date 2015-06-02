@@ -99,6 +99,12 @@ public class JsString extends JsValue
 			throw new JsInvalidOperatorException();
 		return new JsString(value+name.ToString()._getValue());
 	}
+	public JsVar BePlus(JsVar name) throws Exception
+	{
+		if (!(name instanceof JsValue))
+			throw new JsInvalidOperatorException();
+		return new JsString(name.ToString()._getValue()+value);
+	}
 	
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
