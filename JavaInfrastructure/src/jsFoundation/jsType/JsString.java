@@ -29,13 +29,15 @@ public class JsString extends JsValue
 	
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
+		if (!(name instanceof JsValue))
+			return new JsBoolean(false);
 		if (name instanceof JsNumber)
 		{
 			try
 			{
 				double x=Double.parseDouble(value);
 				if (name instanceof JsIntegral)
-					return new JsBoolean(((long)x)==((JsIntegral)name)._getValue());
+					return new JsBoolean(x==(double)((JsIntegral)name)._getValue());
 				else if (name instanceof JsFloat)
 					return new JsBoolean(x==((JsFloat)name)._getValue());
 				else throw new LogicBomb();
@@ -49,17 +51,19 @@ public class JsString extends JsValue
 	{
 		if (!(name instanceof JsString))
 			return new JsBoolean(false);
-		return new JsBoolean(((JsString)name).value==value);
+		return new JsBoolean(((JsString)name).value.equals(value));
 	}
 	public JsBoolean LessThan(JsVar name) throws Exception
 	{
+		if (!(name instanceof JsValue))
+			throw new JsInvalidOperatorException();
 		if (name instanceof JsNumber)
 		{
 			try
 			{
 				double x=Double.parseDouble(value);
 				if (name instanceof JsIntegral)
-					return new JsBoolean(x<((JsIntegral)name)._getValue());
+					return new JsBoolean(x<(double)((JsIntegral)name)._getValue());
 				else if (name instanceof JsFloat)
 					return new JsBoolean(x<((JsFloat)name)._getValue());
 				else throw new LogicBomb();
@@ -69,8 +73,30 @@ public class JsString extends JsValue
 		}
 		return new JsBoolean(value.compareTo(name.ToString()._getValue())<0);
 	}
+	public JsBoolean GreaterThan(JsVar name) throws Exception
+	{
+		if (!(name instanceof JsValue))
+			throw new JsInvalidOperatorException();
+		if (name instanceof JsNumber)
+		{
+			try
+			{
+				double x=Double.parseDouble(value);
+				if (name instanceof JsIntegral)
+					return new JsBoolean(x>(double)((JsIntegral)name)._getValue());
+				else if (name instanceof JsFloat)
+					return new JsBoolean(x>((JsFloat)name)._getValue());
+				else throw new LogicBomb();
+			}
+			catch (NumberFormatException e)
+			{}
+		}
+		return new JsBoolean(value.compareTo(name.ToString()._getValue())>0);
+	}
 	public JsVar Plus(JsVar name) throws Exception
 	{
+		if (!(name instanceof JsValue))
+			throw new JsInvalidOperatorException();
 		return new JsString(value+name.ToString()._getValue());
 	}
 	

@@ -11,6 +11,9 @@ public class JsIntegral extends JsNumber
 	{
 		value=val;
 	}
+	public double Evaluate() {
+		return (double)value;
+	}
 	
 	public JsValue Clone() 
 	{
@@ -19,5 +22,11 @@ public class JsIntegral extends JsNumber
 	public JsString ToString() 
 	{
 		return new JsString(Long.toString(value));
+	}
+	public JsBoolean IdenticalTo(JsVar name) throws Exception
+	{
+		if (!(name instanceof JsIntegral))
+			return new JsBoolean(false);
+		return new JsBoolean(((JsIntegral)name).value==value);
 	}
 }

@@ -39,13 +39,17 @@ public abstract class JsVar
 	//Binary operator for everyone====
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(false);
 	}
 	public JsBoolean IdenticalTo(JsVar name) throws Exception
 	{
-		throw new JsInvalidOperatorException();
+		return new JsBoolean(false);
 	}
 	public JsBoolean LessThan(JsVar name) throws Exception
+	{
+		throw new JsInvalidOperatorException();
+	}
+	public JsBoolean GreaterThan(JsVar name) throws Exception
 	{
 		throw new JsInvalidOperatorException();
 	}
@@ -57,11 +61,19 @@ public abstract class JsVar
 	{
 		throw new JsInvalidOperatorException();
 	}
+	public JsVar BeMinus(JsVar name) throws Exception
+	{
+		throw new JsInvalidOperatorException();
+	}
 	public JsVar Asterisk(JsVar name) throws Exception
 	{
 		throw new JsInvalidOperatorException();
 	}
 	public JsVar Slash(JsVar name) throws Exception
+	{
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar BeSlash(JsVar name) throws Exception
 	{
 		throw new JsInvalidOperatorException();
 	}

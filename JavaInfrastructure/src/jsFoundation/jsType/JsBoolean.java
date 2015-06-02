@@ -1,5 +1,7 @@
 package jsFoundation.jsType;
 
+import jsFoundation.jsException.JsInvalidOperatorException;
+
 public class JsBoolean extends JsValue
 {
 	private boolean value;
@@ -29,12 +31,64 @@ public class JsBoolean extends JsValue
 	
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
-		throw new Exception();
+		if (name instanceof JsNumber)
+			return new JsBoolean(((JsNumber)name).Evaluate()!=0);
+		if (name instanceof JsBoolean)
+			return IdenticalTo(name);
+		return name.EqualTo(this);
 	}
 	public JsBoolean IdenticalTo(JsVar name) throws Exception
 	{
 		if (!(name instanceof JsBoolean))
 			return new JsBoolean(false);
 		return new JsBoolean(((JsBoolean)name).value==value);
+	}
+	public JsBoolean LessThan(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.GreaterThan(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsBoolean GreaterThan(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.LessThan(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar Plus(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.Plus(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar Minus(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.BeMinus(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar BeMinus(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.Minus(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar Asterisk(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.Asterisk(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar Slash(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.Slash(this);
+		throw new JsInvalidOperatorException();
+	}
+	public JsVar BeSlash(JsVar name) throws Exception
+	{
+		if ((name instanceof JsString))
+			return name.BeSlash(this);
+		throw new JsInvalidOperatorException();
 	}
 }
