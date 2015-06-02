@@ -36,8 +36,16 @@ public class UnitCaseTest4Type
 		result=result.EqualTo(num0);
 		//========================
 		JsVar strHaha=new JsString("Haha");
+		JsVar strZLY=new JsString("ZLY");
 		result=num5.Plus(strHaha);
+		result=strHaha.Plus(num0dot5);
 		result=strHaha.Plus(boolFalse);
 		result=boolTrue.Plus(strHaha);
+		result=strZLY.Plus(strHaha);
+		//========================
+		JsVar strUn1=new JsUndefined();
+		JsVar strUn2=new JsUndefined();
+		result=strUn1.IdenticalTo(strUn2);
+		result=strUn1.IdenticalTo(num0dot5);
 	}
 }
