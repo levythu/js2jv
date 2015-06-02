@@ -106,7 +106,7 @@ public class JsList extends JsReference
 	//==============================================================
 	public static class JsList_Push extends JsFunction
 	{
-		public JsVar Execute(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
 		{
 			if (!(_this instanceof JsList))
 				throw new JsWrongThisofNativeFunction();

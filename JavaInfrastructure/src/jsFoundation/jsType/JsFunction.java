@@ -23,7 +23,11 @@ public abstract class JsFunction extends JsReference
 	{
 		return new JsString("function(){...}");
 	}
+	public JsVar Execute(JsVar _this, JsList para, JsClosure closureInfo) throws Exception
+	{
+		return ExecuteDetail(_this,para,closureInfo);
+	}
 	
 	public abstract String GetCanonicalName();
-	public abstract JsVar Execute(JsVar _this, JsList para, JsClosure closureInfo) throws Exception;	//Ramain to modify
+	public abstract JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception;	//Ramain to modify
 }
