@@ -21,6 +21,11 @@ public class JsObject extends JsReference
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
 		String query=name.ToString()._getValue();
+
+		if (query.equals("toString"))
+		{
+			return JsVar._toString;
+		}
 		if (!map.containsKey(query))
 			return new JsUndefined();
 		return map.get(query);

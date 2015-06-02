@@ -1,6 +1,7 @@
 package jsFoundation.jsType;
 
 import jsFoundation.JsClosure;
+import jsFoundation.jsException.JsInvalidIdentifier;
 
 public abstract class JsFunction extends JsReference
 {
@@ -27,6 +28,15 @@ public abstract class JsFunction extends JsReference
 	{
 		JsClosure newClosure=new JsClosure(closureInfo);
 		return ExecuteDetail(_this,para,newClosure);
+	}
+	public JsVar GetProperty(JsVar name) throws Exception
+	{
+		String lookup=name.ToString()._getValue();
+		if (lookup.equals("toString"))
+		{
+			return JsVar._toString;
+		}
+		throw new JsInvalidIdentifier();
 	}
 	
 	public abstract String GetCanonicalName();

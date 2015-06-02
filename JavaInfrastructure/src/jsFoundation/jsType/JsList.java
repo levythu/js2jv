@@ -17,13 +17,20 @@ public class JsList extends JsReference
 	{
 		return new JsString("object");
 	}
-	public JsString ToString() //WARN: not implemented yet.
+	public JsString ToString()
 	{
-		return null;
+		String ans="[";
+		int des=value.size();
+		for (int i=0;i<des;i++)
+		{
+			ans+=value.get(i).toString();
+			if (i!=des-1)
+				ans+=",";
+		}
+		ans+="]";
+		return new JsString(ans);
 	}
-	
-	private static JsList_Push _push=new JsList_Push();
-	
+		
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
 		if (name instanceof JsNumber)
@@ -47,6 +54,14 @@ public class JsList extends JsReference
 		else if (lookup.equals("push"))
 		{
 			return _push;
+		}
+		else if (lookup.equals("push"))
+		{
+			return _pop;
+		}
+		else if (lookup.equals("toString"))
+		{
+			return JsVar._toString;
 		}
 		else
 			return new JsUndefined();
@@ -104,6 +119,7 @@ public class JsList extends JsReference
 
 	//==============================================================
 	//==============================================================
+	protected static JsList_Push _push=new JsList_Push();
 	public static class JsList_Push extends JsFunction
 	{
 		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
@@ -122,6 +138,8 @@ public class JsList extends JsReference
 			return "Js.List.push";
 		}
 	}
+	
+	protected static JsList_Pop _pop=new JsList_Pop();
 	public static class JsList_Pop extends JsFunction
 	{
 		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 

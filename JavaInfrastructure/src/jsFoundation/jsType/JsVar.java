@@ -89,4 +89,19 @@ public abstract class JsVar
 	{
 		return new JsBoolean(this.ToBoolean()._getValue() ^ name.ToBoolean()._getValue());
 	}
+	
+	//==============================================================
+	//==============================================================
+	protected static Var_ToString _toString=new Var_ToString();
+	public static class Var_ToString extends JsFunction
+	{
+		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		{
+			return _this.ToString();
+		}
+		public String GetCanonicalName() 
+		{
+			return "Js.Var.toString";
+		}
+	}
 }
