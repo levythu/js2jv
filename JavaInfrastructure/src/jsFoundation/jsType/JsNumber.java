@@ -8,6 +8,10 @@ public abstract class JsNumber extends JsValue
 	{
 		return new JsString("number");
 	}
+	public JsBoolean ToBoolean() throws Exception
+	{
+		return new JsBoolean(this.Evaluate()!=0);
+	}
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
 		if (!(name instanceof JsNumber))

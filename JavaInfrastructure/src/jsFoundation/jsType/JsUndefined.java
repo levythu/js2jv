@@ -14,7 +14,11 @@ public class JsUndefined extends JsVar
 	{
 		return this;
 	}
-	
+
+	public JsBoolean ToBoolean() throws Exception
+	{
+		return new JsBoolean(false);
+	}
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
 		return new JsBoolean(name instanceof JsUndefined);
