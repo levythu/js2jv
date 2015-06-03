@@ -1,5 +1,6 @@
 package jsFoundation.jsType;
 
+import jsFoundation.JsClosure;
 import jsFoundation.jsException.*;
 
 public class JsString extends JsValue
@@ -108,7 +109,16 @@ public class JsString extends JsValue
 	
 	public JsVar GetProperty(String name) throws Exception
 	{
-		throw new Exception();
+		if (name.equals("length"))
+		{
+			return new JsIntegral(value.length());
+		}
+		else if (name.equals("substr"))
+		{
+			return _substr;
+		}
+		else
+			return new JsUndefined();
 	}
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
@@ -127,4 +137,48 @@ public class JsString extends JsValue
 		}
 		return GetProperty(name.ToString()._getValue());
 	}
+	
+	//==============================================================
+	//==============================================================
+	protected static JsString_Substr _substr=new JsString_Substr();
+	public static class JsString_Substr extends JsFunction
+	{
+		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		{
+			if (!(_this instanceof JsString))
+				throw new JsWrongThisofNativeFunction();
+			int begg,len;
+			JsString belStr=(JsString)_this;
+			if (para.value.size()<1)
+				return new JsUndefined();
+			if (para.value.size()==1)
+			{
+				JsVar p1=para.value.get(0);
+				if (!(p1 instanceof JsIntegral))
+					throw new JsInvalidParameter();
+				begg=(int)((JsIntegral)p1)._getValue();
+				len=belStr.value.length()-begg;
+			}
+			else
+			{
+				JsVar p1=para.value.get(0);
+				JsVar p2=para.value.get(1);
+				if (!(p1 instanceof JsIntegral))
+					throw new JsInvalidParameter();
+				if (!(p2 instanceof JsIntegral))
+					throw new JsInvalidParameter();
+				begg=(int)((JsIntegral)p1)._getValue();
+				len=(int)((JsIntegral)p2)._getValue();
+				if (len>belStr.value.length()-begg)
+					len=belStr.value.length()-begg;
+			}
+			if (begg>=belStr.value.length())
+				return new JsString("");
+			return new JsString(belStr.value.substring(begg, begg+len));
+		}
+		public String GetCanonicalName() 
+		{
+			return "Js.String.substr";
+		}
+	}	
 }

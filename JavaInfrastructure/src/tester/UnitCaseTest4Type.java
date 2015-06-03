@@ -62,5 +62,11 @@ public class UnitCaseTest4Type
 		//========================
 		result=strHaha.GetProperty(new JsIntegral(5));
 		result=strHaha.GetProperty(new JsIntegral(0));
+		//========================
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0), null);
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0,num2), null);
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0,num5), null);
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num5,num5), null);
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num5), null);
 	}
 }
