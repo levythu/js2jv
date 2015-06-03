@@ -52,6 +52,15 @@ public class UnitCaseTest4Type
 		list1.GetProperty("push").Execute(list1, new JsList(num5), null);
 		list1.GetProperty("push").Execute(list1, new JsList(num0dot5), null);
 		list1.GetProperty("push").Execute(list1, new JsList(strZLY), null);
-		
+		result=list1.GetProperty(new JsIntegral(1));
+		list1.SetProperty("length",new JsIntegral(30));
+		list1.SetProperty(new JsIntegral(10),boolTrue);
+		result=list1.GetProperty("length");
+		list1.GetProperty("pop").Execute(list1, new JsList(), null);
+		result=list1.GetProperty("length");
+		list1.SetProperty("length",new JsIntegral(3));
+		//========================
+		result=strHaha.GetProperty(new JsIntegral(5));
+		result=strHaha.GetProperty(new JsIntegral(0));
 	}
 }

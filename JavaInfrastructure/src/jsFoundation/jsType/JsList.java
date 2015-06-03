@@ -70,7 +70,7 @@ public class JsList extends JsReference
 		{
 			return _push;
 		}
-		else if (lookup.equals("push"))
+		else if (lookup.equals("pop"))
 		{
 			return _pop;
 		}
@@ -96,8 +96,8 @@ public class JsList extends JsReference
 					int nowlen=value.size();
 					while (nowlen>len)
 					{	
-						value.remove(len-1);
-						len--;
+						value.remove(nowlen-1);
+						nowlen--;
 					}
 				}
 				else if (len>value.size())
