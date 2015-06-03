@@ -27,11 +27,13 @@ public class JsCarryThread extends Thread
 			{
 				try
 				{
+					System.out.println("++ Function <"+func.delegateContent.GetCanonicalName()+"> starts to run.");
 					func.delegateContent.Execute(func._this, func.para, func.closureInfo);
+					System.out.println("++ Function <"+func.delegateContent.GetCanonicalName()+"> exits without exception.");
 				}
 				catch (Throwable e)
 				{
-					System.out.print("Js runtime error.");	//Used for debug.
+					System.out.println("Js runtime error when executing function <"+func.delegateContent.GetCanonicalName()+">");	//Used for debug.
 					return;
 				}
 			}
