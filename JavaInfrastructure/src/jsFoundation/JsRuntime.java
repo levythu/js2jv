@@ -23,7 +23,8 @@ public class JsRuntime
 		precludeClosure.Set("setInterval", new TimeInterval.SetInterval());
 		precludeClosure.Set("clearInterval", new TimeInterval.ClearInterval());
 		
+		JsMain.SetClosure(precludeClosure);
 		JsFunctionSchedular.GetGlobalSchedular().StashOrLaunchTask(
-				new JsDelegate(JsMain, new JsUndefined(), new JsList(), precludeClosure));
+				new JsDelegate(JsMain, new JsUndefined(), new JsList()));
 	}
 }

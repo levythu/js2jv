@@ -1,10 +1,32 @@
 package jsFoundation.jsType;
 
+import java.util.HashMap;
+
 import jsFoundation.JsClosure;
 import jsFoundation.jsException.JsInvalidIdentifier;
+import jsFoundation.jsException.JsUndefinedClosure;
 
 public abstract class JsFunction extends JsReference
 {
+	private static HashMap<String, JsClosure> closureMap=new HashMap<String, JsClosure>();
+	public void SetClosure(JsClosure obj)
+	{
+		String type=GetCanonicalName();
+		if (closureMap.containsKey(type))
+			System.out.println("*****Fatal error: closure of function <"+type+"> is set twice.*****");
+		else
+			closureMap.put(type, obj);
+	}
+	public JsClosure GetClosure() throws JsUndefinedClosure
+	{
+		if (isNative())
+			return null;
+		String type=GetCanonicalName();
+		if (!closureMap.containsKey(type))
+			throw new JsUndefinedClosure();
+		return closureMap.get(type);
+	}
+	
 	public JsBoolean EqualTo(JsVar name) throws Exception
 	{
 		return IdenticalTo(name);
@@ -24,10 +46,14 @@ public abstract class JsFunction extends JsReference
 	{
 		return new JsString("function(){...}");
 	}
-	public JsVar Execute(JsVar _this, JsList para, JsClosure closureInfo) throws Exception
+		
+	public JsVar Execute(JsVar _this, JsList para) throws Exception
 	{
-		JsClosure newClosure=new JsClosure(closureInfo);
-		return ExecuteDetail(_this,para,newClosure);
+		JsClosure newClosure=new JsClosure(GetClosure());
+		newClosure.Declare("this", _this);
+		newClosure.Declare("parameters", para);
+		
+		return ExecuteDetail(newClosure);
 	}
 	public JsVar GetProperty(String name) throws Exception
 	{
@@ -38,7 +64,19 @@ public abstract class JsFunction extends JsReference
 		}
 		throw new JsInvalidIdentifier();
 	}
+	public boolean isNative()	//If true, it does not need a closure to be executed.
+	{
+		return false;
+	}
 	
 	public abstract String GetCanonicalName();
-	public abstract JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception;	//Ramain to modify
+	public abstract JsVar ExecuteDetail(JsClosure closureInfo) throws Exception;	//Ramain to modify
+	
+	public static abstract class JsNativeFunction extends JsFunction
+	{
+		public boolean isNative()
+		{
+			return true;
+		}
+	}
 }

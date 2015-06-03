@@ -12,14 +12,16 @@ public class TimeOut
 	static HashMap<Integer,Boolean> runnerList=new HashMap<Integer,Boolean>();
 	static int timeoutCount=0;
 	
-	public static class SetTimeOut extends JsFunction
+	public static class SetTimeOut extends JsFunction.JsNativeFunction
 	{
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.setTimeOut";
 		}
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsList para=(JsList)closureInfo.Get("parameters");
+			
 			if (para.value.size()<2)
 				return new JsIntegral(0);
 			if (!(para.value.get(0) instanceof JsFunction))
@@ -33,21 +35,23 @@ public class TimeOut
 			
 			timeoutCount++;
 			runnerList.put(timeoutCount, true);
-			TimerTask obj=new TimerTask(new JsDelegate(cb, new JsUndefined(), new JsList(), closureInfo),
+			TimerTask obj=new TimerTask(new JsDelegate(cb, new JsUndefined(), new JsList()),
 					timeoutCount, dura);
 			obj.start();
 			
 			return new JsIntegral(timeoutCount);
 		}
 	}
-	public static class ClearTimeOut extends JsFunction
+	public static class ClearTimeOut extends JsFunction.JsNativeFunction
 	{
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.clearTimeOut";
 		}
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsList para=(JsList)closureInfo.Get("parameters");
+			
 			if (para.value.size()<1)
 				return new JsUndefined();
 			if (!(para.value.get(0) instanceof JsIntegral))

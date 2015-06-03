@@ -159,10 +159,12 @@ public class JsList extends JsReference
 	//==============================================================
 	//==============================================================
 	protected static JsList_Push _push=new JsList_Push();
-	public static class JsList_Push extends JsFunction
+	public static class JsList_Push extends JsFunction.JsNativeFunction
 	{
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsVar _this=closureInfo.Get("this");
+			JsList para=(JsList)closureInfo.Get("parameters");
 			if (!(_this instanceof JsList))
 				throw new JsWrongThisofNativeFunction();
 			if (para.value.size()<1)
@@ -179,10 +181,11 @@ public class JsList extends JsReference
 	}
 	
 	protected static JsList_Pop _pop=new JsList_Pop();
-	public static class JsList_Pop extends JsFunction
+	public static class JsList_Pop extends JsFunction.JsNativeFunction
 	{
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsVar _this=closureInfo.Get("this");
 			if (!(_this instanceof JsList))
 				throw new JsWrongThisofNativeFunction();
 			JsList thisObject=(JsList)_this;

@@ -49,24 +49,24 @@ public class UnitCaseTest4Type
 		result=strUn1.IdenticalTo(num0dot5);
 		//========================
 		JsVar list1=new JsList();
-		list1.GetProperty("push").Execute(list1, new JsList(num5), null);
-		list1.GetProperty("push").Execute(list1, new JsList(num0dot5), null);
-		list1.GetProperty("push").Execute(list1, new JsList(strZLY), null);
+		list1.GetProperty("push").Execute(list1, new JsList(num5));
+		list1.GetProperty("push").Execute(list1, new JsList(num0dot5));
+		list1.GetProperty("push").Execute(list1, new JsList(strZLY));
 		result=list1.GetProperty(new JsIntegral(1));
 		list1.SetProperty("length",new JsIntegral(30));
 		list1.SetProperty(new JsIntegral(10),boolTrue);
 		result=list1.GetProperty("length");
-		list1.GetProperty("pop").Execute(list1, new JsList(), null);
+		list1.GetProperty("pop").Execute(list1, new JsList());
 		result=list1.GetProperty("length");
 		list1.SetProperty("length",new JsIntegral(3));
 		//========================
 		result=strHaha.GetProperty(new JsIntegral(5));
 		result=strHaha.GetProperty(new JsIntegral(0));
 		//========================
-		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0), null);
-		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0,num2), null);
-		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0,num5), null);
-		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num5,num5), null);
-		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num5), null);
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0));
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0,num2));
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num0,num5));
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num5,num5));
+		result=strHaha.GetProperty("substr").Execute(strHaha, new JsList(num5));
 	}
 }

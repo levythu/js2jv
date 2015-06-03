@@ -141,10 +141,13 @@ public class JsString extends JsValue
 	//==============================================================
 	//==============================================================
 	protected static JsString_Substr _substr=new JsString_Substr();
-	public static class JsString_Substr extends JsFunction
+	public static class JsString_Substr extends JsFunction.JsNativeFunction
 	{
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsVar _this=closureInfo.Get("this");
+			JsList para=(JsList)closureInfo.Get("parameters");
+			
 			if (!(_this instanceof JsString))
 				throw new JsWrongThisofNativeFunction();
 			int begg,len;

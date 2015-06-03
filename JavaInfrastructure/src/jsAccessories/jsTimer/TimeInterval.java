@@ -17,14 +17,16 @@ public class TimeInterval
 	static HashMap<Integer,Boolean> runnerList=new HashMap<Integer,Boolean>();
 	static int intervalCount=19940701;
 	
-	public static class SetInterval extends JsFunction
+	public static class SetInterval extends JsFunction.JsNativeFunction
 	{
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.setInterval";
 		}
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsList para=(JsList)closureInfo.Get("parameters");
+			
 			if (para.value.size()<2)
 				return new JsIntegral(0);
 			if (!(para.value.get(0) instanceof JsFunction))
@@ -38,21 +40,23 @@ public class TimeInterval
 			
 			intervalCount++;
 			runnerList.put(intervalCount, true);
-			IntervalTask obj=new IntervalTask(new JsDelegate(cb, new JsUndefined(), new JsList(), closureInfo),
+			IntervalTask obj=new IntervalTask(new JsDelegate(cb, new JsUndefined(), new JsList()),
 					intervalCount, dura);
 			obj.start();
 			
 			return new JsIntegral(intervalCount);
 		}
 	}
-	public static class ClearInterval extends JsFunction
+	public static class ClearInterval extends JsFunction.JsNativeFunction
 	{
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.clearInterval";
 		}
-		public JsVar ExecuteDetail(JsVar _this, JsList para, JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
+			JsList para=(JsList)closureInfo.Get("parameters");
+			
 			if (para.value.size()<1)
 				return new JsUndefined();
 			if (!(para.value.get(0) instanceof JsIntegral))

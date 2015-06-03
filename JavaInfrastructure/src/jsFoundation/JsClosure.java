@@ -23,8 +23,28 @@ public class JsClosure
 		}
 		return new JsUndefined();
 	}
+	public void Declare(String varName, JsVar var)
+	{
+		variableList.put(varName, var);
+	}
+	public void FunctionDeclare(String varName, JsFunction func)	//Must use this for declaring new function!
+	{
+		Declare(varName,func);
+		func.SetClosure(this);
+	}
 	public void Set(String varName, JsVar var)
 	{
+		JsClosure current=this;
+		while (current!=null)
+		{
+			if (current.variableList.containsKey(varName))
+			{
+				current.variableList.put(varName, var);
+				return;
+			}
+			current=current.ParentClosure;
+		}
+		
 		variableList.put(varName, var);
 	}
 }
