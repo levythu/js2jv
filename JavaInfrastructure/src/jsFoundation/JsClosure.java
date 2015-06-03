@@ -10,6 +10,7 @@ public class JsClosure
 	public JsClosure(JsClosure par)
 	{
 		ParentClosure=par;
+		variableList=new HashMap<String, JsVar>();
 	}
 	public JsVar Get(String varName)
 	{
@@ -21,5 +22,9 @@ public class JsClosure
 			current=current.ParentClosure;
 		}
 		return new JsUndefined();
+	}
+	public void Set(String varName, JsVar var)
+	{
+		variableList.put(varName, var);
 	}
 }

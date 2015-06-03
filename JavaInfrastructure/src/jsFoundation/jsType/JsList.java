@@ -7,7 +7,7 @@ import jsFoundation.jsException.*;
 
 public class JsList extends JsReference
 {
-	ArrayList<JsVar> value;
+	public ArrayList<JsVar> value;
 	
 	public JsList()
 	{
