@@ -25,7 +25,7 @@ public class TimeInterval
 		}
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
-			JsList para=(JsList)closureInfo.Get("parameters");
+			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (para.value.size()<2)
 				return new JsIntegral(0);

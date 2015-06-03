@@ -1,14 +1,15 @@
 package jsFoundation.jsType;
 
-import java.util.HashMap;
-
+//import java.util.HashMap;
 import jsFoundation.JsClosure;
 import jsFoundation.jsException.JsInvalidIdentifier;
 import jsFoundation.jsException.JsUndefinedClosure;
 
 public abstract class JsFunction extends JsReference
 {
-	private static HashMap<String, JsClosure> closureMap=new HashMap<String, JsClosure>();
+	//private static HashMap<String, JsClosure> closureMap=new HashMap<String, JsClosure>();
+	private JsClosure pClosure;
+	/**
 	public void SetClosure(JsClosure obj)
 	{
 		String type=GetCanonicalName();
@@ -25,6 +26,22 @@ public abstract class JsFunction extends JsReference
 		if (!closureMap.containsKey(type))
 			throw new JsUndefinedClosure();
 		return closureMap.get(type);
+	}
+	**/
+	public void SetClosure(JsClosure obj)
+	{
+		if (pClosure!=null)
+			System.out.println("*****Fatal error: closure of function <"+GetCanonicalName()+"> is set twice.*****");
+		else
+			pClosure=obj;
+	}
+	public JsClosure GetClosure() throws JsUndefinedClosure
+	{
+		if (isNative())
+			return null;
+		if (pClosure==null)
+			throw new JsUndefinedClosure();
+		return pClosure;
 	}
 	
 	public JsBoolean EqualTo(JsVar name) throws Exception
@@ -51,7 +68,7 @@ public abstract class JsFunction extends JsReference
 	{
 		JsClosure newClosure=new JsClosure(GetClosure());
 		newClosure.Declare("this", _this);
-		newClosure.Declare("parameters", para);
+		newClosure.Declare("arguments", para);
 		
 		return ExecuteDetail(newClosure);
 	}
