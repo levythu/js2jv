@@ -18,9 +18,9 @@ public class JsObject extends JsReference
 	{
 		return new JsString("[object Object]");
 	}
-	public JsVar GetProperty(JsVar name) throws Exception
+	public JsVar GetProperty(String name) throws Exception
 	{
-		String query=name.ToString()._getValue();
+		String query=name;
 
 		if (query.equals("toString"))
 		{
@@ -30,9 +30,9 @@ public class JsObject extends JsReference
 			return new JsUndefined();
 		return map.get(query);
 	}
-	public void SetProperty(JsVar name, JsVar value) throws Exception
+	public void SetProperty(String name, JsVar value) throws Exception
 	{
-		String query=name.ToString()._getValue();
+		String query=name;
 		map.put(query, value);	
 	}
 }

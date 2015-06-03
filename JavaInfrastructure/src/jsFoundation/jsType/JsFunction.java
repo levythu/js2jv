@@ -29,9 +29,9 @@ public abstract class JsFunction extends JsReference
 		JsClosure newClosure=new JsClosure(closureInfo);
 		return ExecuteDetail(_this,para,newClosure);
 	}
-	public JsVar GetProperty(JsVar name) throws Exception
+	public JsVar GetProperty(String name) throws Exception
 	{
-		String lookup=name.ToString()._getValue();
+		String lookup=name;
 		if (lookup.equals("toString"))
 		{
 			return JsVar._toString;

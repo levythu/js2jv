@@ -9,9 +9,9 @@ public abstract class JsValue extends JsVar
 	{
 		return Clone();
 	}
-	public JsVar GetProperty(JsVar name) throws Exception
+	public JsVar GetProperty(String name) throws Exception
 	{
-		String lookup=name.ToString()._getValue();
+		String lookup=name;
 		if (lookup.equals("toString"))
 		{
 			return JsVar._toString;

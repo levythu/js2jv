@@ -17,13 +17,21 @@ public abstract class JsVar
 	}
 	//================================
 	//For string/object/list==========
-	public JsVar GetProperty(JsVar name) throws Exception	//Please use assign artificially.
+	public JsVar GetProperty(String name) throws Exception	//Please use assign artificially.
 	{
 		throw new JsInvalidOperatorException();
 	}
-	public void SetProperty(JsVar name, JsVar value) throws Exception
+	public void SetProperty(String name, JsVar value) throws Exception
 	{
 		throw new JsInvalidOperatorException();
+	}
+	public JsVar GetProperty(JsVar name) throws Exception	//Please use assign artificially.
+	{
+		return GetProperty(name.ToString()._getValue());
+	}
+	public void SetProperty(JsVar name, JsVar value) throws Exception
+	{
+		SetProperty(name.ToString()._getValue(),value);
 	}
 	//================================
 	//Unary operator for everyone====

@@ -13,40 +13,55 @@ public class JsList extends JsReference
 	{
 		value=new ArrayList<JsVar>();
 	}
+	public JsList(JsVar e1)
+	{
+		value=new ArrayList<JsVar>();
+		value.add(e1);
+	}
+	public JsList(JsVar e1, JsVar e2)
+	{
+		value=new ArrayList<JsVar>();
+		value.add(e1);
+		value.add(e2);
+	}
+	public JsList(JsVar e1, JsVar e2, JsVar e3)
+	{
+		value=new ArrayList<JsVar>();
+		value.add(e1);
+		value.add(e2);
+		value.add(e3);
+	}
+	public JsList(JsVar e1, JsVar e2, JsVar e3, JsVar e4)
+	{
+		value=new ArrayList<JsVar>();
+		value.add(e1);
+		value.add(e2);
+		value.add(e3);
+		value.add(e4);
+	}
+	public void _push(JsVar e)
+	{
+		value.add(e);
+	}
 	public JsString TypeOf() 
 	{
 		return new JsString("object");
 	}
 	public JsString ToString()
 	{
-		String ans="[";
+		String ans="";
 		int des=value.size();
 		for (int i=0;i<des;i++)
 		{
-			ans+=value.get(i).toString();
+			ans+=value.get(i).ToString()._getValue();
 			if (i!=des-1)
 				ans+=",";
 		}
-		ans+="]";
 		return new JsString(ans);
 	}
-		
-	public JsVar GetProperty(JsVar name) throws Exception
+	public JsVar GetProperty(String name) throws Exception
 	{
-		if (name instanceof JsNumber)
-		{
-			int id;
-			if (name instanceof JsIntegral)
-				id=(int)((JsIntegral)name)._getValue();
-			else if (name instanceof JsFloat)
-				id=(int)((JsFloat)name)._getValue();
-			else throw new LogicBomb();
-			if (id>=0 && id<value.size())
-				return value.get(id);
-			else
-				return new JsUndefined();
-		}
-		String lookup=name.ToString()._getValue();
+		String lookup=name;
 		if (lookup.equals("length"))
 		{
 			return new JsIntegral(value.size());
@@ -66,29 +81,9 @@ public class JsList extends JsReference
 		else
 			return new JsUndefined();
 	}
-	public void SetProperty(JsVar name, JsVar val) throws Exception
+	public void SetProperty(String name, JsVar val) throws Exception
 	{
-		if (name instanceof JsNumber)
-		{
-			int id;
-			if (name instanceof JsIntegral)
-				id=(int)((JsIntegral)name)._getValue();
-			else if (name instanceof JsFloat)
-				id=(int)((JsFloat)name)._getValue();
-			else throw new LogicBomb();
-			
-			if (id<0) throw new JsInvalidIdentifier();
-			int needsToPush=id-value.size()+1;
-			while (needsToPush>0)
-			{
-				needsToPush--;
-				value.add(new JsUndefined());
-			}
-			
-			value.set(id, val);
-			return;
-		}
-		String lookup=name.ToString()._getValue();
+		String lookup=name;
 		if (lookup.equals("length"))
 		{
 			if (val instanceof JsIntegral)
@@ -115,6 +110,50 @@ public class JsList extends JsReference
 		}
 		else
 			throw new JsInvalidIdentifier();
+	}
+	
+	public JsVar GetProperty(JsVar name) throws Exception
+	{
+		if (name instanceof JsNumber)
+		{
+			int id;
+			if (name instanceof JsIntegral)
+				id=(int)((JsIntegral)name)._getValue();
+			else if (name instanceof JsFloat)
+				id=(int)((JsFloat)name)._getValue();
+			else throw new LogicBomb();
+			if (id>=0 && id<value.size())
+				return value.get(id);
+			else
+				return new JsUndefined();
+		}
+		String lookup=name.ToString()._getValue();
+		return GetProperty(lookup);
+	}
+	public void SetProperty(JsVar name, JsVar val) throws Exception
+	{
+		if (name instanceof JsNumber)
+		{
+			int id;
+			if (name instanceof JsIntegral)
+				id=(int)((JsIntegral)name)._getValue();
+			else if (name instanceof JsFloat)
+				id=(int)((JsFloat)name)._getValue();
+			else throw new LogicBomb();
+			
+			if (id<0) throw new JsInvalidIdentifier();
+			int needsToPush=id-value.size()+1;
+			while (needsToPush>0)
+			{
+				needsToPush--;
+				value.add(new JsUndefined());
+			}
+			
+			value.set(id, val);
+			return;
+		}
+		String lookup=name.ToString()._getValue();
+		SetProperty(lookup,val);
 	}
 
 	//==============================================================

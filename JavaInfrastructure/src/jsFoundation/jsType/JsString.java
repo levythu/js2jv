@@ -106,6 +106,10 @@ public class JsString extends JsValue
 		return new JsString(name.ToString()._getValue()+value);
 	}
 	
+	public JsVar GetProperty(String name) throws Exception
+	{
+		throw new Exception();
+	}
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
 		if (name instanceof JsNumber)
@@ -121,6 +125,6 @@ public class JsString extends JsValue
 			else
 				return new JsUndefined();
 		}
-		throw new Exception();
+		return GetProperty(name.ToString()._getValue());
 	}
 }

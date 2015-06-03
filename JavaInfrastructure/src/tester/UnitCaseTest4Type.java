@@ -47,5 +47,11 @@ public class UnitCaseTest4Type
 		JsVar strUn2=new JsUndefined();
 		result=strUn1.IdenticalTo(strUn2);
 		result=strUn1.IdenticalTo(num0dot5);
+		//========================
+		JsVar list1=new JsList();
+		list1.GetProperty("push").Execute(list1, new JsList(num5), null);
+		list1.GetProperty("push").Execute(list1, new JsList(num0dot5), null);
+		list1.GetProperty("push").Execute(list1, new JsList(strZLY), null);
+		
 	}
 }
