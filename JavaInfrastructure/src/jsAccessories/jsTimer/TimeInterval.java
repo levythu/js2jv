@@ -41,6 +41,8 @@ public class TimeInterval
 			long dura=tm._getValue();
 			if (dura<0) dura=0;
 			
+			cb=JsFunction.dup(cb, new JsUndefined());
+			
 			intervalCount++;
 			runnerList.put(intervalCount, true);
 			IntervalTask obj=new IntervalTask(new JsDelegate(cb, new JsList()),

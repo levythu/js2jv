@@ -1,6 +1,7 @@
 package jsAccessories.jsTimer;
 
 import java.util.HashMap;
+
 import jsFoundation.JsClosure;
 import jsFoundation.jsScheduler.JsDelegate;
 import jsFoundation.jsScheduler.JsTask;
@@ -35,6 +36,8 @@ public class TimeOut
 			JsIntegral tm=(JsIntegral)para.value.get(1);
 			long dura=tm._getValue();
 			if (dura<0) dura=0;
+			
+			cb=JsFunction.dup(cb, new JsUndefined());
 			
 			timeoutCount++;
 			runnerList.put(timeoutCount, true);
