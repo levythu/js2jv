@@ -32,7 +32,20 @@ public class JsObject extends JsReference
 	}
 	public void SetProperty(String name, JsVar value) throws Exception
 	{
+		if (value instanceof JsFunction)
+		{
+			JsFunction oldvar=(JsFunction)value;
+			value=JsFunction.dup(oldvar, this);
+		}
 		String query=name;
 		map.put(query, value);	
+	}
+	public void SetProperty(JsVar name, JsVar val) throws Exception
+	{
+		SetProperty(name.ToString()._getValue(),val);
+	}
+	public JsVar GetProperty(JsVar name) throws Exception
+	{
+		return GetProperty(name.ToString()._getValue());
 	}
 }

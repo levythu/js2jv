@@ -143,6 +143,10 @@ public class JsString extends JsValue
 	protected static JsString_Substr _substr=new JsString_Substr();
 	public static class JsString_Substr extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new JsString_Substr();
+		}
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
 			JsVar _this=closureInfo.Get("this");

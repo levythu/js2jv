@@ -5,6 +5,10 @@ import jsFoundation.jsType.*;
 
 public class UnitTest4Scheduler extends JsFunction
 {
+	public JsFunction GetDup() 
+	{
+		return new UnitTest4Scheduler();
+	}
 	public String GetCanonicalName() 
 	{
 		return "Unittest.main";
@@ -16,16 +20,20 @@ public class UnitTest4Scheduler extends JsFunction
 		closureInfo.FunctionDeclare("killit", new killit());
 		closureInfo.Declare("pID", 
 				closureInfo.Get("setInterval").Execute(
-				null, new JsList(closureInfo.Get("huahua"), new JsIntegral(1000))));
+				new JsList(closureInfo.Get("huahua"), new JsIntegral(1000))));
 		closureInfo.Set("pID", 
 				closureInfo.Get("setTimeout").Execute(
-				null, new JsList(new killit(), new JsIntegral(5000))));
+				new JsList(new killit(), new JsIntegral(5000))));
 		
 		return new JsUndefined();
 	}
 
 	public class huahua extends JsFunction
 	{
+		public JsFunction GetDup() 
+		{
+			return new huahua();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Unittest.huahua";
@@ -38,6 +46,10 @@ public class UnitTest4Scheduler extends JsFunction
 	}
 	public class killit extends JsFunction
 	{
+		public JsFunction GetDup() 
+		{
+			return new killit();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Unittest.killit";
@@ -45,7 +57,7 @@ public class UnitTest4Scheduler extends JsFunction
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
 		{
 			closureInfo.Get("clearInterval").Execute(
-					null, new JsList(closureInfo.Get("pID")));
+					new JsList(closureInfo.Get("pID")));
 			return new JsUndefined();
 		}
 	}

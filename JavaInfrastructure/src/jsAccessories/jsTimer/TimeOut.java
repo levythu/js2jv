@@ -1,7 +1,6 @@
 package jsAccessories.jsTimer;
 
 import java.util.HashMap;
-
 import jsFoundation.JsClosure;
 import jsFoundation.jsScheduler.JsDelegate;
 import jsFoundation.jsScheduler.JsTask;
@@ -14,6 +13,10 @@ public class TimeOut
 	
 	public static class SetTimeOut extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new SetTimeOut();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.setTimeOut";
@@ -35,7 +38,7 @@ public class TimeOut
 			
 			timeoutCount++;
 			runnerList.put(timeoutCount, true);
-			TimerTask obj=new TimerTask(new JsDelegate(cb, new JsUndefined(), new JsList()),
+			TimerTask obj=new TimerTask(new JsDelegate(cb, new JsList()),
 					timeoutCount, dura);
 			obj.start();
 			
@@ -44,6 +47,10 @@ public class TimeOut
 	}
 	public static class ClearTimeOut extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new ClearTimeOut();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.clearTimeOut";

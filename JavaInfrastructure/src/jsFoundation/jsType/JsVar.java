@@ -11,7 +11,7 @@ public abstract class JsVar
 	public abstract JsVar Assign();
 	//The following method is used-specified, but to keep weak-type feature we need to provide a default implementation.
 	//For function====================
-	public JsVar Execute(JsVar _this, JsList para) throws Exception
+	public JsVar Execute(JsList para) throws Exception
 	{
 		throw new JsInvalidOperatorException();
 	}
@@ -103,6 +103,10 @@ public abstract class JsVar
 	protected static Var_ToString _toString=new Var_ToString();
 	public static class Var_ToString extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new Var_ToString();
+		}
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
 			JsVar _this=closureInfo.Get("this");

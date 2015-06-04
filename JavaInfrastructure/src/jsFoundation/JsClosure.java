@@ -38,15 +38,28 @@ public class JsClosure
 	}
 	public void Declare(String varName, JsVar var)
 	{
+		if (var instanceof JsFunction)
+		{
+			JsFunction oldvar=(JsFunction)var;
+			var=JsFunction.dup(oldvar, new JsUndefined());
+		}
 		variableList.put(varName, var);
 	}
 	public void FunctionDeclare(String varName, JsFunction func)	//Must use this for declaring new function!
 	{
-		Declare(varName,func);
+		JsFunction oldvar=func;
+		func=JsFunction.dup(oldvar, new JsUndefined());
 		func.SetClosure(this);
+		
+		Declare(varName,func);
 	}
 	public void Set(String varName, JsVar var)
 	{
+		if (var instanceof JsFunction)
+		{
+			JsFunction oldvar=(JsFunction)var;
+			var=JsFunction.dup(oldvar, new JsUndefined());
+		}
 		JsClosure current=this;
 		while (current!=null)
 		{

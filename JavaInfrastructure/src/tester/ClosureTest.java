@@ -5,6 +5,10 @@ import jsFoundation.jsType.*;
 
 public class ClosureTest extends JsFunction
 {
+	public JsFunction GetDup() 
+	{
+		return new ClosureTest();
+	}
 	public String GetCanonicalName()
 	{
 		return "test.ClosureTest.main";
@@ -20,7 +24,7 @@ public class ClosureTest extends JsFunction
 			JsVar constNum1=new JsIntegral(1);
 			while (closureInfo.Get("i").LessThan(constNum4)._getValue())
 			{
-				closureInfo.Get("setTimeout").Execute(null, 
+				closureInfo.Get("setTimeout").Execute(
 						new JsList(closureInfo.Get("GenedFunc"),closureInfo.Get("i").Asterisk(constNum1000))
 				);
 				closureInfo.Set("i", closureInfo.Get("i").Plus(constNum1));
@@ -36,9 +40,9 @@ public class ClosureTest extends JsFunction
 			JsVar constNum1=new JsIntegral(1);
 			while (closureInfo.Get("i").LessThan(constNum4)._getValue())
 			{
-				closureInfo.Get("setTimeout").Execute(null, 
-						new JsList(closureInfo.Get("Gener").Execute(null, new JsList(closureInfo.Get("i")))
-								,closureInfo.Get("i").Asterisk(constNum1000))
+				JsVar resF=closureInfo.Get("Gener").Execute(new JsList(closureInfo.Get("i")));
+				closureInfo.Get("setTimeout").Execute(
+						new JsList(resF,closureInfo.Get("i").Asterisk(constNum1000))
 				);
 				closureInfo.Set("i", closureInfo.Get("i").Plus(constNum1));
 			}
@@ -50,6 +54,7 @@ public class ClosureTest extends JsFunction
 
 	static class GenedFunc extends JsFunction
 	{
+		
 		public String GetCanonicalName()
 		{
 			return "test.ClosureTest.GenedFunc";
@@ -59,6 +64,10 @@ public class ClosureTest extends JsFunction
 			System.out.println(closureInfo.Get("i").ToString()._getValue());
 			
 			return new JsUndefined();
+		}
+		public JsFunction GetDup() 
+		{
+			return new GenedFunc();
 		}
 	}
 	
@@ -73,6 +82,10 @@ public class ClosureTest extends JsFunction
 			cl.Declare("i", cl.Get("arguments").GetProperty(new JsIntegral(0)));
 			cl.FunctionDeclare("tmpr", new GenedFunc());
 			return cl.Get("tmpr");
+		}
+		public JsFunction GetDup() 
+		{
+			return new Gener();
 		}
 	}
 }

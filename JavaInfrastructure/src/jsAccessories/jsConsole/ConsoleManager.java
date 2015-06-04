@@ -19,6 +19,10 @@ public class ConsoleManager
 	}
 	public static class consoleLog extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new consoleLog();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.console.log";
@@ -35,6 +39,10 @@ public class ConsoleManager
 	}
 	public static class consoleWarn extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new consoleWarn();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.console.warn";

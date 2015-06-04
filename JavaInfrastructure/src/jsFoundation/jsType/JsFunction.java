@@ -3,23 +3,29 @@ package jsFoundation.jsType;
 //import java.util.HashMap;
 import jsFoundation.JsClosure;
 import jsFoundation.jsException.JsInvalidIdentifier;
+import jsFoundation.jsException.JsNoThis;
 import jsFoundation.jsException.JsUndefinedClosure;
 
 public abstract class JsFunction extends JsReference
 {
 	public static JsFunction dup(JsFunction ori)
 	{
-		try
-		{
-			return ori.getClass().newInstance();
-		}
-		catch (Throwable e)
-		{ }
-		return ori;
+		JsFunction res=ori.GetDup();
+		res._this=null;
+		res.pClosure=ori.pClosure;
+		return res;
+	}
+	public static JsFunction dup(JsFunction ori, JsVar newThis)
+	{
+		JsFunction res=ori.GetDup();
+		res._this=newThis;
+		res.pClosure=ori.pClosure;
+		return res;
 	}
 	
 	//private static HashMap<String, JsClosure> closureMap=new HashMap<String, JsClosure>();
 	private JsClosure pClosure;
+	private JsVar _this;
 	/**
 	public void SetClosure(JsClosure obj)
 	{
@@ -75,8 +81,10 @@ public abstract class JsFunction extends JsReference
 		return new JsString("function(){...}");
 	}
 		
-	public JsVar Execute(JsVar _this, JsList para) throws Exception
+	public JsVar Execute(JsList para) throws Exception
 	{
+		if (_this==null)
+			throw new JsNoThis();
 		JsClosure newClosure=new JsClosure(GetClosure());
 		newClosure.Declare("this", _this);
 		newClosure.Declare("arguments", para);
@@ -98,7 +106,8 @@ public abstract class JsFunction extends JsReference
 	}
 	
 	public abstract String GetCanonicalName();
-	public abstract JsVar ExecuteDetail(JsClosure closureInfo) throws Exception;	//Ramain to modify
+	public abstract JsVar ExecuteDetail(JsClosure closureInfo) throws Exception;	//Remain to modify
+	public abstract JsFunction GetDup();
 	
 	public static abstract class JsNativeFunction extends JsFunction
 	{

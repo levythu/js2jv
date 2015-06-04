@@ -13,7 +13,7 @@ public class JsRuntime
 	
 	public JsRuntime(JsFunction mainer)
 	{
-		JsMain=mainer;
+		JsMain=JsFunction.dup(mainer, new JsUndefined());
 		precludeClosure=new JsClosure(null);
 		JsFunctionSchedular.initSchedular();
 	}
@@ -33,6 +33,6 @@ public class JsRuntime
 		
 		JsMain.SetClosure(precludeClosure);
 		JsFunctionSchedular.GetGlobalSchedular().StashOrLaunchTask(
-				new JsDelegate(JsMain, new JsUndefined(), new JsList()));
+				new JsDelegate(JsMain, new JsList()));
 	}
 }

@@ -1,7 +1,6 @@
 package jsFoundation.jsType;
 
 import java.util.ArrayList; 
-
 import jsFoundation.JsClosure;
 import jsFoundation.jsException.*;
 
@@ -16,32 +15,37 @@ public class JsList extends JsReference
 	public JsList(JsVar e1)
 	{
 		value=new ArrayList<JsVar>();
-		value.add(e1);
+		_push(e1);
 	}
 	public JsList(JsVar e1, JsVar e2)
 	{
 		value=new ArrayList<JsVar>();
-		value.add(e1);
-		value.add(e2);
+		_push(e1);
+		_push(e2);
 	}
 	public JsList(JsVar e1, JsVar e2, JsVar e3)
 	{
 		value=new ArrayList<JsVar>();
-		value.add(e1);
-		value.add(e2);
-		value.add(e3);
+		_push(e1);
+		_push(e2);
+		_push(e3);
 	}
 	public JsList(JsVar e1, JsVar e2, JsVar e3, JsVar e4)
 	{
 		value=new ArrayList<JsVar>();
-		value.add(e1);
-		value.add(e2);
-		value.add(e3);
-		value.add(e4);
+		_push(e1);
+		_push(e2);
+		_push(e3);
+		_push(e4);
 	}
-	public void _push(JsVar e)
+	public void _push(JsVar var)
 	{
-		value.add(e);
+		if (var instanceof JsFunction)
+		{
+			JsFunction oldvar=(JsFunction)var;
+			var=JsFunction.dup(oldvar, this);
+		}
+		value.add(var);
 	}
 	public JsString TypeOf() 
 	{
@@ -149,6 +153,11 @@ public class JsList extends JsReference
 				value.add(new JsUndefined());
 			}
 			
+			if (val instanceof JsFunction)
+			{
+				JsFunction oldvar=(JsFunction)val;
+				val=JsFunction.dup(oldvar, this);
+			}
 			value.set(id, val);
 			return;
 		}
@@ -161,6 +170,10 @@ public class JsList extends JsReference
 	protected static JsList_Push _push=new JsList_Push();
 	public static class JsList_Push extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new JsList_Push();
+		}
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
 			JsVar _this=closureInfo.Get("this");
@@ -170,7 +183,7 @@ public class JsList extends JsReference
 			if (para.value.size()<1)
 				return new JsUndefined();
 			JsList thisObject=(JsList)_this;
-			thisObject.value.add(para.value.get(0));
+			thisObject._push(para.value.get(0));
 
 			return new JsUndefined();
 		}
@@ -183,6 +196,10 @@ public class JsList extends JsReference
 	protected static JsList_Pop _pop=new JsList_Pop();
 	public static class JsList_Pop extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new JsList_Pop();
+		}
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
 			JsVar _this=closureInfo.Get("this");

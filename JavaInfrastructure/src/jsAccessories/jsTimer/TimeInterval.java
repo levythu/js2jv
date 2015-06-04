@@ -1,7 +1,6 @@
 package jsAccessories.jsTimer;
 
 import java.util.HashMap;
-
 import jsFoundation.JsClosure;
 import jsFoundation.jsScheduler.JsDelegate;
 import jsFoundation.jsScheduler.JsFunctionSchedular;
@@ -19,6 +18,10 @@ public class TimeInterval
 	
 	public static class SetInterval extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new SetInterval();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.setInterval";
@@ -40,7 +43,7 @@ public class TimeInterval
 			
 			intervalCount++;
 			runnerList.put(intervalCount, true);
-			IntervalTask obj=new IntervalTask(new JsDelegate(cb, new JsUndefined(), new JsList()),
+			IntervalTask obj=new IntervalTask(new JsDelegate(cb, new JsList()),
 					intervalCount, dura);
 			obj.start();
 			
@@ -49,6 +52,10 @@ public class TimeInterval
 	}
 	public static class ClearInterval extends JsFunction.JsNativeFunction
 	{
+		public JsFunction GetDup()
+		{
+			return new ClearInterval();
+		}
 		public String GetCanonicalName() 
 		{
 			return "Js.Prelude.clearInterval";
