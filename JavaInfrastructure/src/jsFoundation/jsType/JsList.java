@@ -1,13 +1,13 @@
 package jsFoundation.jsType;
 
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import jsFoundation.JsClosure;
 import jsFoundation.jsException.*;
 
 public class JsList extends JsReference
 {
 	public ArrayList<JsVar> value;
-	
+
 	public JsList()
 	{
 		value=new ArrayList<JsVar>();
@@ -38,6 +38,25 @@ public class JsList extends JsReference
 		_push(e3);
 		_push(e4);
 	}
+	public JsList(JsVar e1, JsVar e2, JsVar e3, JsVar e4, JsVar e5)
+	{
+		value=new ArrayList<JsVar>();
+		_push(e1);
+		_push(e2);
+		_push(e3);
+		_push(e4);
+		_push(e5);
+	}
+	public JsList(JsVar e1, JsVar e2, JsVar e3, JsVar e4, JsVar e5, JsVar e6)
+	{
+		value=new ArrayList<JsVar>();
+		_push(e1);
+		_push(e2);
+		_push(e3);
+		_push(e4);
+		_push(e5);
+		_push(e6);
+	}
 	public void _push(JsVar var)
 	{
 		if (var instanceof JsFunction)
@@ -47,7 +66,7 @@ public class JsList extends JsReference
 		}
 		value.add(var);
 	}
-	public JsString TypeOf() 
+	public JsString TypeOf()
 	{
 		return new JsString("object");
 	}
@@ -99,7 +118,7 @@ public class JsList extends JsReference
 				{
 					int nowlen=value.size();
 					while (nowlen>len)
-					{	
+					{
 						value.remove(nowlen-1);
 						nowlen--;
 					}
@@ -115,7 +134,7 @@ public class JsList extends JsReference
 		else
 			throw new JsInvalidIdentifier();
 	}
-	
+
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
 		if (name instanceof JsNumber)
@@ -144,7 +163,7 @@ public class JsList extends JsReference
 			else if (name instanceof JsFloat)
 				id=(int)((JsFloat)name)._getValue();
 			else throw new LogicBomb();
-			
+
 			if (id<0) throw new JsInvalidIdentifier();
 			int needsToPush=id-value.size()+1;
 			while (needsToPush>0)
@@ -152,7 +171,7 @@ public class JsList extends JsReference
 				needsToPush--;
 				value.add(new JsUndefined());
 			}
-			
+
 			if (val instanceof JsFunction)
 			{
 				JsFunction oldvar=(JsFunction)val;
@@ -174,7 +193,7 @@ public class JsList extends JsReference
 		{
 			return new JsList_Push();
 		}
-		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
 		{
 			JsVar _this=closureInfo.Get("this");
 			JsList para=(JsList)closureInfo.Get("parameters");
@@ -187,12 +206,12 @@ public class JsList extends JsReference
 
 			return new JsUndefined();
 		}
-		public String GetCanonicalName() 
+		public String GetCanonicalName()
 		{
 			return "Js.List.push";
 		}
 	}
-	
+
 	protected static JsList_Pop _pop=new JsList_Pop();
 	public static class JsList_Pop extends JsFunction.JsNativeFunction
 	{
@@ -200,7 +219,7 @@ public class JsList extends JsReference
 		{
 			return new JsList_Pop();
 		}
-		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
 		{
 			JsVar _this=closureInfo.Get("this");
 			if (!(_this instanceof JsList))
@@ -211,7 +230,7 @@ public class JsList extends JsReference
 			else
 				return thisObject.value.remove(thisObject.value.size()-1);
 		}
-		public String GetCanonicalName() 
+		public String GetCanonicalName()
 		{
 			return "Js.List.pop";
 		}
