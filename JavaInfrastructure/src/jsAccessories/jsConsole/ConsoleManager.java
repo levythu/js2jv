@@ -16,6 +16,7 @@ public class ConsoleManager
 		{
 			ans.SetProperty("log", new consoleLog());
 			ans.SetProperty("warn", new consoleWarn());
+			ans.SetProperty("readline", new consoleReadline());
 		}
 		catch (Exception e)
 		{}
@@ -95,7 +96,7 @@ public class ConsoleManager
 			public ReadStdINTask(JsFunction _callback)
 			{
 				rawFun=_callback;
-				if (stdin!=null)
+				if (stdin==null)
 					stdin=new BufferedReader(new InputStreamReader(System.in));
 			}
 			protected boolean TaskContent() 

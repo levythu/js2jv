@@ -17,23 +17,31 @@ public class ClosureTest extends JsFunction
 	{
 		closureInfo=JsClosure.foldClosure(closureInfo);
 		{
-			closureInfo.FunctionDeclare("GenedFunc", new GenedFunc());
-			closureInfo.Declare("i", new JsIntegral(1));
-			JsVar constNum4=new JsIntegral(4);
-			JsVar constNum1000=new JsIntegral(1000);
-			JsVar constNum1=new JsIntegral(1);
-			while (closureInfo.Get("i").LessThan(constNum4)._getValue())
-			{
-				closureInfo.Get("setTimeout").Execute(
-						new JsList(closureInfo.Get("GenedFunc"),closureInfo.Get("i").Asterisk(constNum1000))
-				);
-				closureInfo.Set("i", closureInfo.Get("i").Plus(constNum1));
-			}
-		}
-		closureInfo=JsClosure.unfoldClosure(closureInfo);
-		closureInfo=JsClosure.foldClosure(closureInfo);
-		{
 			closureInfo.FunctionDeclare("Gener", new Gener());
+			closureInfo.Declare("i", new JsIntegral(10086));
+			closureInfo.Get("console").GetProperty("readline").Execute(
+					new JsList(closureInfo.Get("Gener").Execute(
+							new JsList(closureInfo.Get("i"))
+					))
+			);
+			
+			closureInfo=JsClosure.foldClosure(closureInfo);
+			{
+				closureInfo.FunctionDeclare("GenedFunc", new GenedFunc());
+				closureInfo.Declare("i", new JsIntegral(1));
+				JsVar constNum4=new JsIntegral(4);
+				JsVar constNum1000=new JsIntegral(1000);
+				JsVar constNum1=new JsIntegral(1);
+				while (closureInfo.Get("i").LessThan(constNum4)._getValue())
+				{
+					closureInfo.Get("setTimeout").Execute(
+							new JsList(closureInfo.Get("GenedFunc"),closureInfo.Get("i").Asterisk(constNum1000))
+					);
+					closureInfo.Set("i", closureInfo.Get("i").Plus(constNum1));
+				}
+			}
+			closureInfo=JsClosure.unfoldClosure(closureInfo);
+			
 			closureInfo.Declare("i", new JsIntegral(1));
 			JsVar constNum4=new JsIntegral(4);
 			JsVar constNum1000=new JsIntegral(1000);
