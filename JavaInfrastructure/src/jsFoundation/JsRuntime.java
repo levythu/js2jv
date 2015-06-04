@@ -17,7 +17,8 @@ public class JsRuntime
 		precludeClosure=new JsClosure(null);
 		JsFunctionSchedular.initSchedular();
 	}
-	public void Run()
+	
+	private void preparePreClosure()
 	{
 		precludeClosure.Set("setTimeout", new TimeOut.SetTimeOut());
 		precludeClosure.Set("clearTimeout", new TimeOut.ClearTimeOut());
@@ -25,6 +26,10 @@ public class JsRuntime
 		precludeClosure.Set("clearInterval", new TimeInterval.ClearInterval());
 		
 		precludeClosure.Set("console", ConsoleManager.require());
+	}
+	public void Run()
+	{
+		preparePreClosure();
 		
 		JsMain.SetClosure(precludeClosure);
 		JsFunctionSchedular.GetGlobalSchedular().StashOrLaunchTask(

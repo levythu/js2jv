@@ -7,6 +7,17 @@ import jsFoundation.jsException.JsUndefinedClosure;
 
 public abstract class JsFunction extends JsReference
 {
+	public static JsFunction dup(JsFunction ori)
+	{
+		try
+		{
+			return ori.getClass().newInstance();
+		}
+		catch (Throwable e)
+		{ }
+		return ori;
+	}
+	
 	//private static HashMap<String, JsClosure> closureMap=new HashMap<String, JsClosure>();
 	private JsClosure pClosure;
 	/**
