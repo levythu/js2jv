@@ -1,6 +1,7 @@
 package jsFoundation;
 
 import jsAccessories.jsTimer.*;
+import jsAccessories.jsConsole.*;
 import jsFoundation.jsScheduler.JsDelegate;
 import jsFoundation.jsScheduler.JsFunctionSchedular;
 import jsFoundation.jsType.*;
@@ -22,6 +23,8 @@ public class JsRuntime
 		precludeClosure.Set("clearTimeout", new TimeOut.ClearTimeOut());
 		precludeClosure.Set("setInterval", new TimeInterval.SetInterval());
 		precludeClosure.Set("clearInterval", new TimeInterval.ClearInterval());
+		
+		precludeClosure.Set("console", ConsoleManager.require());
 		
 		JsMain.SetClosure(precludeClosure);
 		JsFunctionSchedular.GetGlobalSchedular().StashOrLaunchTask(

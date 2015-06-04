@@ -31,7 +31,7 @@ public abstract class JsFunction extends JsReference
 	public void SetClosure(JsClosure obj)
 	{
 		if (pClosure!=null)
-			System.out.println("*****Fatal error: closure of function <"+GetCanonicalName()+"> is set twice.*****");
+			System.err.println("*****Fatal error: closure of function <"+GetCanonicalName()+"> is set twice.*****");
 		else
 			pClosure=obj;
 	}

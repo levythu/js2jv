@@ -33,7 +33,7 @@ public class JsCarryThread extends Thread
 				}
 				catch (Throwable e)
 				{
-					System.out.println("Js runtime error when executing function <"+func.delegateContent.GetCanonicalName()+">");	//Used for debug.
+					System.err.println("Js runtime error when executing function <"+func.delegateContent.GetCanonicalName()+">");	//Used for debug.
 					return;
 				}
 			}
