@@ -155,6 +155,10 @@ public class JsString extends JsValue
 		{
 			return JsFunction.dup(_substr, this);
 		}
+		else if (name.equals("indexOf"))
+		{
+			return JsFunction.dup(_indexOf, this);
+		}
 		else
 			return new JsUndefined();
 	}
@@ -226,4 +230,33 @@ public class JsString extends JsValue
 			return "Js.String.substr";
 		}
 	}	
+	
+	protected static JsString_indexOf _indexOf=new JsString_indexOf();
+	public static class JsString_indexOf extends JsFunction.JsNativeFunction
+	{
+		public JsFunction GetDup()
+		{
+			return new JsString_indexOf();
+		}
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
+		{
+			JsVar _this=closureInfo.Get("this");
+			JsList para=(JsList)closureInfo.Get("arguments");
+			
+			if (!(_this instanceof JsString))
+				throw new JsWrongThisofNativeFunction();
+			JsString belStr=(JsString)_this;
+			if (para.value.size()<1)
+				return new JsIntegral(-1);
+			JsVar p1=para.value.get(0);
+			if (!(p1 instanceof JsString))
+				return new JsIntegral(-1);
+			String dest=((JsString)p1).value;
+			return new JsIntegral(belStr.value.indexOf(dest));
+		}
+		public String GetCanonicalName() 
+		{
+			return "Js.String.indexOf";
+		}
+	}
 }

@@ -98,6 +98,14 @@ public class JsList extends JsReference
 		{
 			return JsFunction.dup(_pop,this);
 		}
+		else if (lookup.equals("shift"))
+		{
+			return JsFunction.dup(_shift,this);
+		}
+		else if (lookup.equals("unshift"))
+		{
+			return JsFunction.dup(_unshift,this);
+		}
 		else if (lookup.equals("toString"))
 		{
 			return JsFunction.dup(JsVar._toString,this);
@@ -200,12 +208,12 @@ public class JsList extends JsReference
 			JsList para=(JsList)closureInfo.Get("arguments");
 			if (!(_this instanceof JsList))
 				throw new JsWrongThisofNativeFunction();
-			if (para.value.size()<1)
-				return new JsUndefined();
 			JsList thisObject=(JsList)_this;
+			if (para.value.size()<1)
+				return new JsIntegral(thisObject.value.size());
 			thisObject._push(para.value.get(0));
 
-			return new JsUndefined();
+			return new JsIntegral(thisObject.value.size());
 		}
 		public String GetCanonicalName()
 		{
@@ -234,6 +242,56 @@ public class JsList extends JsReference
 		public String GetCanonicalName()
 		{
 			return "Js.List.pop";
+		}
+	}
+	
+	protected static JsList_UnShift _unshift=new JsList_UnShift();
+	public static class JsList_UnShift extends JsFunction.JsNativeFunction
+	{
+		public JsFunction GetDup()
+		{
+			return new JsList_UnShift();
+		}
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
+		{
+			JsVar _this=closureInfo.Get("this");
+			JsList para=(JsList)closureInfo.Get("arguments");
+			if (!(_this instanceof JsList))
+				throw new JsWrongThisofNativeFunction();
+			JsList thisObject=(JsList)_this;
+			if (para.value.size()<1)
+				return new JsIntegral(thisObject.value.size());
+			thisObject.value.add(0, para.value.get(0));
+			
+			return new JsIntegral(thisObject.value.size());
+		}
+		public String GetCanonicalName()
+		{
+			return "Js.List.unshift";
+		}
+	}
+
+	protected static JsList_Shift _shift=new JsList_Shift();
+	public static class JsList_Shift extends JsFunction.JsNativeFunction
+	{
+		public JsFunction GetDup()
+		{
+			return new JsList_Shift();
+		}
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
+		{
+			JsVar _this=closureInfo.Get("this");
+			if (!(_this instanceof JsList))
+				throw new JsWrongThisofNativeFunction();
+			JsList thisObject=(JsList)_this;
+			if (thisObject.value.isEmpty())
+				return new JsUndefined();
+			else
+				return thisObject.value.remove(0);
+		}
+		public String GetCanonicalName()
+		{
+			return "Js.List.shift";
 		}
 	}
 }
