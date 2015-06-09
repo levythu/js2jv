@@ -24,7 +24,7 @@ public class JsObject extends JsReference
 
 		if (query.equals("toString"))
 		{
-			return JsVar._toString;
+			return JsFunction.dup(JsVar._toString,this);
 		}
 		if (!map.containsKey(query))
 			return new JsUndefined();

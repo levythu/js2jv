@@ -1,6 +1,7 @@
 package jsFoundation.jsType;
 
 import java.util.ArrayList;
+
 import jsFoundation.JsClosure;
 import jsFoundation.jsException.*;
 
@@ -91,15 +92,15 @@ public class JsList extends JsReference
 		}
 		else if (lookup.equals("push"))
 		{
-			return _push;
+			return JsFunction.dup(_push, this);
 		}
 		else if (lookup.equals("pop"))
 		{
-			return _pop;
+			return JsFunction.dup(_pop,this);
 		}
 		else if (lookup.equals("toString"))
 		{
-			return JsVar._toString;
+			return JsFunction.dup(JsVar._toString,this);
 		}
 		else
 			return new JsUndefined();
@@ -196,7 +197,7 @@ public class JsList extends JsReference
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
 		{
 			JsVar _this=closureInfo.Get("this");
-			JsList para=(JsList)closureInfo.Get("parameters");
+			JsList para=(JsList)closureInfo.Get("arguments");
 			if (!(_this instanceof JsList))
 				throw new JsWrongThisofNativeFunction();
 			if (para.value.size()<1)

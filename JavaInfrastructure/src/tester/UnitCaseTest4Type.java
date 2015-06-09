@@ -68,5 +68,10 @@ public class UnitCaseTest4Type
 		result=strHaha.GetProperty("substr").Execute(new JsList(num0,num5));
 		result=strHaha.GetProperty("substr").Execute(new JsList(num5,num5));
 		result=strHaha.GetProperty("substr").Execute(new JsList(num5));
+		
+		JsVar num2dot5string=new JsString("2.5");
+		JsVar num2string=new JsString("2");
+		result=num0.Minus(num0.Minus(num2dot5string));
+		result=num0.Minus(num0.Minus(num2string));
 	}
 }

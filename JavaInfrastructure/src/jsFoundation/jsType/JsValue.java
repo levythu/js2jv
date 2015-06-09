@@ -14,7 +14,7 @@ public abstract class JsValue extends JsVar
 		String lookup=name;
 		if (lookup.equals("toString"))
 		{
-			return JsVar._toString;
+			return JsFunction.dup(JsVar._toString,this);
 		}
 		throw new JsInvalidIdentifier();
 	}

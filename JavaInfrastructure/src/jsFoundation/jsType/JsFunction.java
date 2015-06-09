@@ -96,7 +96,7 @@ public abstract class JsFunction extends JsReference
 		String lookup=name;
 		if (lookup.equals("toString"))
 		{
-			return JsVar._toString;
+			return JsFunction.dup(JsVar._toString,this);
 		}
 		throw new JsInvalidIdentifier();
 	}

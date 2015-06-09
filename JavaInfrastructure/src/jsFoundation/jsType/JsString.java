@@ -106,6 +106,44 @@ public class JsString extends JsValue
 			throw new JsInvalidOperatorException();
 		return new JsString(name.ToString()._getValue()+value);
 	}
+	private JsVar ToNumber() throws Exception
+	{
+		JsVar me;
+		try
+		{
+			long q=Long.parseLong(value);
+			me=new JsIntegral(q);
+		}
+		catch (Throwable e)
+		{
+			try
+			{
+				double q=Double.parseDouble(value);
+				me=new JsFloat(q);
+			}
+			catch (Throwable e2)
+			{
+				throw new JsInvalidOperatorException();
+			}
+		}
+		return me;
+	}
+	public JsVar Minus(JsVar name) throws Exception
+	{
+		if (!(name instanceof JsNumber))
+			throw new JsInvalidOperatorException();
+		JsVar num=ToNumber();
+		
+		return num.Minus(name);
+	}
+	public JsVar BeMinus(JsVar name) throws Exception
+	{
+		if (!(name instanceof JsNumber))
+			throw new JsInvalidOperatorException();
+		JsVar num=ToNumber();
+		
+		return num.BeMinus(name);
+	}
 	
 	public JsVar GetProperty(String name) throws Exception
 	{
@@ -115,7 +153,7 @@ public class JsString extends JsValue
 		}
 		else if (name.equals("substr"))
 		{
-			return _substr;
+			return JsFunction.dup(_substr, this);
 		}
 		else
 			return new JsUndefined();
@@ -150,7 +188,7 @@ public class JsString extends JsValue
 		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
 		{
 			JsVar _this=closureInfo.Get("this");
-			JsList para=(JsList)closureInfo.Get("parameters");
+			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (!(_this instanceof JsString))
 				throw new JsWrongThisofNativeFunction();
