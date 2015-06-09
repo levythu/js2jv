@@ -43,8 +43,8 @@ public class UnitCaseTest4Type
 		result=boolTrue.Plus(strHaha);
 		result=strZLY.Plus(strHaha);
 		//========================
-		JsVar strUn1=new JsUndefined();
-		JsVar strUn2=new JsUndefined();
+		JsVar strUn1=JsUndefined.getInstance();
+		JsVar strUn2=JsUndefined.getInstance();
 		result=strUn1.IdenticalTo(strUn2);
 		result=strUn1.IdenticalTo(num0dot5);
 		//========================
@@ -73,5 +73,16 @@ public class UnitCaseTest4Type
 		JsVar num2string=new JsString("2");
 		result=num0.Minus(num0.Minus(num2dot5string));
 		result=num0.Minus(num0.Minus(num2string));
+		//========================
+		JsVar ls=new JsList();
+		JsVar ls2=new JsList(list1,num5,num2dot5string);
+		result=ls2.GetProperty("unshift").Execute(new JsList(strZLY));
+		result=ls2.GetProperty("shift").Execute(new JsList());
+		result=ls2.GetProperty("pop").Execute(new JsList());
+		result=ls2.GetProperty("shift").Execute(new JsList());
+		result=ls2.GetProperty("shift").Execute(new JsList());
+		result=ls2.GetProperty("pop").Execute(new JsList());
+		JsVar mutai=ls.GetProperty("shift").Execute(new JsList());
+		result=mutai.IdenticalTo(result);
 	}
 }

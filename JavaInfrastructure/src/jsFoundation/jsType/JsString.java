@@ -160,7 +160,7 @@ public class JsString extends JsValue
 			return JsFunction.dup(_indexOf, this);
 		}
 		else
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 	}
 	public JsVar GetProperty(JsVar name) throws Exception
 	{
@@ -175,7 +175,7 @@ public class JsString extends JsValue
 			if (id>=0 && id<value.length())
 				return new JsString(value.substring(id, id+1));
 			else
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 		}
 		return GetProperty(name.ToString()._getValue());
 	}
@@ -199,7 +199,7 @@ public class JsString extends JsValue
 			int begg,len;
 			JsString belStr=(JsString)_this;
 			if (para.value.size()<1)
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			if (para.value.size()==1)
 			{
 				JsVar p1=para.value.get(0);

@@ -71,7 +71,7 @@ public class ClosureTest extends JsFunction
 		{
 			System.out.println(closureInfo.Get("i").ToString()._getValue());
 			
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 		public JsFunction GetDup() 
 		{

@@ -111,7 +111,7 @@ public class JsList extends JsReference
 			return JsFunction.dup(JsVar._toString,this);
 		}
 		else
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 	}
 	public void SetProperty(String name, JsVar val) throws Exception
 	{
@@ -134,7 +134,7 @@ public class JsList extends JsReference
 				}
 				else if (len>value.size())
 				{
-					SetProperty(new JsIntegral(len-1),new JsUndefined());
+					SetProperty(new JsIntegral(len-1),JsUndefined.getInstance());
 				}
 			}
 			else
@@ -157,7 +157,7 @@ public class JsList extends JsReference
 			if (id>=0 && id<value.size())
 				return value.get(id);
 			else
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 		}
 		String lookup=name.ToString()._getValue();
 		return GetProperty(lookup);
@@ -178,7 +178,7 @@ public class JsList extends JsReference
 			while (needsToPush>0)
 			{
 				needsToPush--;
-				value.add(new JsUndefined());
+				value.add(JsUndefined.getInstance());
 			}
 
 			if (val instanceof JsFunction)
@@ -235,7 +235,7 @@ public class JsList extends JsReference
 				throw new JsWrongThisofNativeFunction();
 			JsList thisObject=(JsList)_this;
 			if (thisObject.value.isEmpty())
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			else
 				return thisObject.value.remove(thisObject.value.size()-1);
 		}
@@ -285,7 +285,7 @@ public class JsList extends JsReference
 				throw new JsWrongThisofNativeFunction();
 			JsList thisObject=(JsList)_this;
 			if (thisObject.value.isEmpty())
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			else
 				return thisObject.value.remove(0);
 		}

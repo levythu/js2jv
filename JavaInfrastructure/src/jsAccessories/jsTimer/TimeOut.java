@@ -37,7 +37,7 @@ public class TimeOut
 			long dura=tm._getValue();
 			if (dura<0) dura=0;
 			
-			cb=JsFunction.dup(cb, new JsUndefined());
+			cb=JsFunction.dup(cb, JsUndefined.getInstance());
 			
 			timeoutCount++;
 			runnerList.put(timeoutCount, true);
@@ -63,14 +63,14 @@ public class TimeOut
 			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (para.value.size()<1)
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			if (!(para.value.get(0) instanceof JsIntegral))
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 		
 			JsIntegral num=(JsIntegral)para.value.get(0);
 			runnerList.put((int)num._getValue(), false);
 			
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 	}
 	public static class TimerTask extends JsTask

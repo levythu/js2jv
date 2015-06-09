@@ -25,7 +25,7 @@ public class UnitTest4Scheduler extends JsFunction
 				closureInfo.Get("setTimeout").Execute(
 				new JsList(new killit(), new JsIntegral(5000))));
 		
-		return new JsUndefined();
+		return JsUndefined.getInstance();
 	}
 
 	public class huahua extends JsFunction
@@ -41,7 +41,7 @@ public class UnitTest4Scheduler extends JsFunction
 		public JsVar ExecuteDetail(JsClosure closureInfo)
 		{
 			System.out.println("huahua");
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 	}
 	public class killit extends JsFunction
@@ -58,7 +58,7 @@ public class UnitTest4Scheduler extends JsFunction
 		{
 			closureInfo.Get("clearInterval").Execute(
 					new JsList(closureInfo.Get("pID")));
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 	}
 }

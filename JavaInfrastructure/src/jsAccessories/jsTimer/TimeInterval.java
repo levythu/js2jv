@@ -41,7 +41,7 @@ public class TimeInterval
 			long dura=tm._getValue();
 			if (dura<0) dura=0;
 			
-			cb=JsFunction.dup(cb, new JsUndefined());
+			cb=JsFunction.dup(cb, JsUndefined.getInstance());
 			
 			intervalCount++;
 			runnerList.put(intervalCount, true);
@@ -67,14 +67,14 @@ public class TimeInterval
 			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (para.value.size()<1)
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			if (!(para.value.get(0) instanceof JsIntegral))
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 		
 			JsIntegral num=(JsIntegral)para.value.get(0);
 			runnerList.put((int)num._getValue(), false);
 			
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 	}
 	public static class IntervalTask extends JsTask

@@ -27,7 +27,7 @@ public class JsObject extends JsReference
 			return JsFunction.dup(JsVar._toString,this);
 		}
 		if (!map.containsKey(query))
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		return map.get(query);
 	}
 	public void SetProperty(String name, JsVar value) throws Exception

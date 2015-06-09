@@ -13,7 +13,7 @@ public class JsRuntime
 	
 	public JsRuntime(JsFunction mainer)
 	{
-		JsMain=JsFunction.dup(mainer, new JsUndefined());
+		JsMain=JsFunction.dup(mainer, JsUndefined.getInstance());
 		precludeClosure=new JsClosure(null);
 		JsFunctionSchedular.initSchedular();
 	}

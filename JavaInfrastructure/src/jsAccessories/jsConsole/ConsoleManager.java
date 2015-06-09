@@ -37,9 +37,9 @@ public class ConsoleManager
 			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (para.value.size()<1)
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			System.out.print(para.value.get(0).ToString()._getValue());
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 	}
 	public static class consoleWarn extends JsFunction.JsNativeFunction
@@ -57,9 +57,9 @@ public class ConsoleManager
 			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (para.value.size()<1)
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			System.err.print(para.value.get(0).ToString()._getValue());
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 	}
 	public static class consoleReadline extends JsFunction.JsNativeFunction	//A figurative function, not existed in Node.
@@ -77,16 +77,16 @@ public class ConsoleManager
 			JsList para=(JsList)closureInfo.Get("arguments");
 			
 			if (para.value.size()<1)
-				return new JsUndefined();
+				return JsUndefined.getInstance();
 			JsVar rawArg=para.value.get(0);
 			if (!(rawArg instanceof JsFunction))
-				return new JsUndefined();
-			JsFunction callback=JsFunction.dup((JsFunction)rawArg, new JsUndefined());
+				return JsUndefined.getInstance();
+			JsFunction callback=JsFunction.dup((JsFunction)rawArg, JsUndefined.getInstance());
 			
 			ReadStdINTask st=new ReadStdINTask(callback);
 			st.start();
 			
-			return new JsUndefined();
+			return JsUndefined.getInstance();
 		}
 		
 		public static class ReadStdINTask extends JsTask
