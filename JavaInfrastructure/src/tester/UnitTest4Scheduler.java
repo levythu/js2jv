@@ -38,7 +38,7 @@ public class UnitTest4Scheduler extends JsFunction
 		{
 			return "Unittest.huahua";
 		}
-		public JsVar ExecuteDetail(JsClosure closureInfo)
+		public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception
 		{
 			System.out.println("huahua");
 			return JsUndefined.getInstance();

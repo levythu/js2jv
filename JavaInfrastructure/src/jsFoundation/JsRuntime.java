@@ -1,5 +1,6 @@
 package jsFoundation;
 
+import jsAccessories.jsProcess.*;
 import jsAccessories.jsTimer.*;
 import jsAccessories.jsConsole.*;
 import jsFoundation.jsScheduler.JsDelegate;
@@ -26,6 +27,7 @@ public class JsRuntime
 		precludeClosure.Set("clearInterval", new TimeInterval.ClearInterval());
 		
 		precludeClosure.Set("console", ConsoleManager.require());
+		precludeClosure.Set("process", ProcessManager.require());
 	}
 	public void Run()
 	{

@@ -14,7 +14,7 @@ public class JsUndefined extends JsVar
 	}
 	public JsString ToString() 
 	{
-		return new JsString("undefined");		//WARN: in real JS this behavior leads to error.
+		return new JsString("undefined");		//ATTENTEZ: in real JS this behavior leads to error.
 	}
 	public JsVar Assign() 
 	{
