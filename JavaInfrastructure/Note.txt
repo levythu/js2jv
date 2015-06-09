@@ -1,3 +1,4 @@
 1. always declare all invoke-used variable in local scope
 2. use declare function at the head of its definition block
 3. always assign to a local scope and then return
+4. when get new instance of undefined, use JsUndefined.getInstance instead of new JsUndefined() <not universal>
