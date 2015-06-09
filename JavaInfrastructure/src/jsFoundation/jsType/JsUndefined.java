@@ -2,6 +2,12 @@ package jsFoundation.jsType;
 
 public class JsUndefined extends JsVar
 {
+	static JsUndefined _pd=new JsUndefined();
+	public static JsUndefined getInstance()
+	{
+		return _pd;
+	}
+	
 	public JsString TypeOf() 
 	{
 		return new JsString("undefined");
