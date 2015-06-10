@@ -1,10 +1,10 @@
 package jsFoundation;
 
+import jsAccessories.jsMath.*;
 import jsAccessories.jsProcess.*;
 import jsAccessories.jsTimer.*;
 import jsAccessories.jsConsole.*;
-import jsFoundation.jsScheduler.JsDelegate;
-import jsFoundation.jsScheduler.JsFunctionSchedular;
+import jsFoundation.jsScheduler.*;
 import jsFoundation.jsType.*;
 
 public class JsRuntime 
@@ -28,6 +28,7 @@ public class JsRuntime
 		
 		precludeClosure.Set("console", ConsoleManager.require());
 		precludeClosure.Set("process", ProcessManager.require());
+		precludeClosure.Set("Math", MathManager.require());
 	}
 	public void Run()
 	{
