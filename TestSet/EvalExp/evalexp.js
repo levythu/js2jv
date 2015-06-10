@@ -53,7 +53,8 @@ function dal2Rpn(exp)
         		}
         		if (top!='(')
         		{
-        			throw "error: unmatched ()";
+        			console.log("error: unmatched ()");
+                    process.exit(-1);
         		}
         	}
         	else
@@ -74,7 +75,8 @@ function dal2Rpn(exp)
 
 	if(outputStack.length > 0){
         if(outputStack[outputStack.length - 1] == ')' || outputStack[outputStack.length - 1] == '('){
-            throw "error: unmatched ()";
+            console.log("error: unmatched ()");
+            process.exit(-1);
         }
         while(outputStack.length > 0){
             outputExp.push(outputStack.pop());
@@ -92,7 +94,8 @@ function evalRpn(rpnQueue){
             outputStack.push(cur);
         }else{
             if(outputStack.length < 2){
-                throw "unvalid stack length";
+                console.log("invalid stack length");
+                process.exit(-1);
             }
             var sec = outputStack.pop();
             var fir = outputStack.pop();
@@ -102,7 +105,8 @@ function evalRpn(rpnQueue){
     }
 
     if(outputStack.length != 1){
-        throw "unvalid expression";
+        console.log("invalid exp");
+        process.exit(-1);
     }else{
         return outputStack[0];
     }
@@ -125,7 +129,10 @@ function getResult(a,b,op)
             if(b!=0)
                 return a/b;
             else
-                throw "unvalid divisor";
+            {
+                console.log("invalid divisor");
+                process.exit(-1);
+            }
     }
 }
 
