@@ -1,6 +1,6 @@
 package jsFoundation.jsScheduler;
 
-import java.util.*; 
+import java.util.*;
 
 public class JsFunctionSchedular
 {
@@ -12,12 +12,12 @@ public class JsFunctionSchedular
 	public synchronized static void initSchedular()	//Be sure to run it to init.
 	{
 		if (GlobalSchedular!=null) return;
-			GlobalSchedular=new JsFunctionSchedular();
+		GlobalSchedular=new JsFunctionSchedular();
 	}
-	
+
 	private LinkedList<JsDelegate> FunctionQueue;
 	private JsCarryThread Carrier;
-	
+
 	public JsFunctionSchedular()
 	{
 		FunctionQueue=new LinkedList<JsDelegate>();
