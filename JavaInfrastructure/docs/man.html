@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>man</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif,"微软雅黑";
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace,"微软雅黑";
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif,"微软雅黑";
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>JavaInfrastructure Manual</h1>
+<p>By Levy</p>
+<h2>函数实现</h2>
+<h3>overall</h3>
+<p>对于js的任何一个函数(匿名、不匿名)，都需要实现一个类，继承jsFoundation.jsType.JsFunction并实现如下几个函数：</p>
+<ul>
+<li>GetDup(): 返回自己的实例</li>
+<li>GetCanonicalName(): 以字符串形式返回一个全局唯一的名字作为该函数的标识</li>
+<li>ExecuteDetail(JsClosure closureInfo): 运行实例代码。其中closureInfo为该代码运行时的闭包变量。(下文细讲)</li>
+</ul>
+<p>由于js所有代码都是在函数体里的(其实最外层也是有函数的，隐性默认main函数，如果这一点用现有文法很难处理可以考虑在原文法开始符号前再加个符号拓广之)，所以所有其他函数的“声明”(见下文)都在
+主函数(或更子函数中)执行。</p>
+<p>下文为例子，sin函数的实现。</p>
+<pre><code>public static class MathSin extends JsFunction.JsFunction
+{       
+    public JsFunction GetDup()
+    {
+        return new MathSin();
+    }
+    public String GetCanonicalName() 
+    {
+        return &quot;Js.Prelude.Math.sin&quot;;
+    }
+    public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
+    {
+        JsList para=(JsList)closureInfo.Get(&quot;arguments&quot;);
+
+        if (para.value.size()&lt;1)
+            return new JsFloat(Double.NaN);
+        double res;
+        try
+        {
+            res=MathConverter.ExtractValueInDouble(para.value.get(0));
+        }
+        catch (Throwable e)
+        {
+            return new JsFloat(Double.NaN);
+        }
+
+        return new JsFloat(Math.sin(res));
+    }
+}
+</code></pre>
+
+<h3>arguments</h3>
+<p>需要注意的是，由于js函数调用灵活度超高，参数个数是不定的，故参数以arguments变量的形式在闭包里存着。在编译的时候需要显示在函数头加上显式声明参数的语句，如：</p>
+<pre><code>function(p1,p2)...
+</code></pre>
+
+<p>在翻译后化为：</p>
+<pre><code>closure.Set(&quot;p1&quot;,closure.Get(&quot;arguments&quot;).value.get(0));
+closure.Set(&quot;p2&quot;,closure.Get(&quot;arguments&quot;).value.get(1));
+</code></pre>
+
+<p>这样。并不用像sin的实现一样考虑arguments数组的长度，因为不包含时会返回undefined，与js默认行为相同。</p>
+<h3>this pointer</h3>
+<p>另外，在closure里还预制了this变量可用于获取。其作用于js里完全一致，不用做任何额外处理。</p>
+<h3>函数的声明</h3>
+<p>需要注意的一点是，由于闭包的存在，函数声明时是需要考虑其声明地点的，也就是，在哪个大括号里(如果在最外层就默认在main函数)。转换为java后，尽管跟函数实现有关的类另外定义在当前函数类外，但在代码上原函数声明地点的位置需要用closure.FunctionDeclare来给其初始化闭包。</p>
+<p>举个例子，js代码如下时：</p>
+<pre><code>var s=3;
+function func(a,b)
+{
+    ...
+}
+s=s+5;
+</code></pre>
+
+<p>如此翻译：</p>
+<pre><code>class MAINer
+{
+    ...
+    ...
+    public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
+    {
+        ...    
+        closureInfo.Declare(&quot;s&quot;,new JsIntegral(3));
+        closureInfo.FunctionDeclare(&quot;func&quot;, new func());
+        closureInfo.Set(&quot;s&quot;,closureInfo.Get(&quot;s&quot;).Plus(new JsIntegral(5)));
+        ...
+    }
+}
+class func
+{
+    ...
+    ...
+    public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception 
+    {
+        ...    
+    }
+}
+</code></pre>
+
+<h2>闭包</h2>
+<p>这货好说，就是替代了作用域而作为变量管理器的东西。对于被编译代码可见的所有变量都要活在闭包里，(被编译代码不可见的如临时变量，辅助性常数变量等是可以直接定义成java变量的)。其主要函数有以下几个：</p>
+<ul>
+<li>foldClosure(original): 对应{，深入一层闭包</li>
+<li>unfoldClosure(original)： 对应}，解一层闭包(<strong>需要注意的是，函数最外层的大括号所代表的闭包关系infrastructure会自动处理，只有在函数体中的大括号层次需要手动调用该两个函数</strong>)</li>
+<li>Get(string): 在闭包中取得名为string的变量，这个会按新作用域override旧作用域的原则寻找应该找到的变量。如果找完都没找到，会返回一个undef。</li>
+<li>Set(string,jsVar): 在闭包中设置名为string的变量，如果找不到该变量就在最新闭包里自动声明一个。这一点也和js的行为完全一致，不用做任何判断，直接把赋值语句等价于这个就ok。</li>
+<li>Declare(string,jsVar)：和set类似，不过总在最新闭包里声明该变量。即使有也会被override。和js行为一致，直接把var x=t;这样的语句等价转换就好。</li>
+<li>FunctionDeclare(string,jsVar)：上文以说，不必赘述。注意因为一个函数只会被定义一次，所以对于一种JsFunction类这样的语句只应该被写一次。</li>
+</ul>
+<h2>JsVar</h2>
+<p>高度抽象过的东西，表示所有类型的js变量。其运算符也是universal的，只是不少会有re。直接做从语法规则到java语句的一一映射不难。下为映射表，其中省略了从闭包Get变量的过程。</p>
+<table>
+<thead>
+<tr>
+	<th>映射前js语句</th>
+	<th>映射后java</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+	<td>x(p,q);</td>
+	<td>x.execute(new JsList(p,q))； //这里的jslist参数有限的，理论上说还是需要事先push好一个jslist再传递。</td>
+</tr>
+<tr>
+	<td>x.a;或x[&quot;a&quot;]</td>
+	<td>x.GetProperty(new JsString(&quot;a&quot;));</td>
+</tr>
+<tr>
+	<td>x[1]</td>
+	<td>x.GetProperty(new JsIntegral(1));</td>
+</tr>
+<tr>
+	<td>x[variable]</td>
+	<td>x.GetProperty(variable);</td>
+</tr>
+<tr>
+	<td>x[?]=</td>
+	<td>x.SetProperty //具体调用方式同上三</td>
+</tr>
+<tr>
+	<td>!x</td>
+	<td>x.Exclaimation</td>
+</tr>
+<tr>
+	<td>x==y</td>
+	<td>x.EqualTo(y)</td>
+</tr>
+<tr>
+	<td>x===y</td>
+	<td>x.IdenticalTo(y)</td>
+</tr>
+<tr>
+	<td>x&lt;y</td>
+	<td>x.LessThan(y)</td>
+</tr>
+<tr>
+	<td>x&lt;=y</td>
+	<td>x.LessThan(y).Or(x.IdenticalTo(y))</td>
+</tr>
+<tr>
+	<td>x+y</td>
+	<td>x.Plus(y)</td>
+</tr>
+<tr>
+	<td>x-y</td>
+	<td>x.Minus(y)</td>
+</tr>
+<tr>
+	<td>x*y</td>
+	<td>x.Asterisk(y)</td>
+</tr>
+<tr>
+	<td>x/y</td>
+	<td>x.Slash(y)</td>
+</tr>
+<tr>
+	<td>x&amp;&amp;y</td>
+	<td>x.And(y) //这几个不是位运算！</td>
+</tr>
+<tr>
+	<td>x&#124;&#124;y</td>
+	<td>x.Or(y)</td>
+</tr>
+<tr>
+	<td>x^y</td>
+	<td>x.Xor(y)</td>
+</tr>
+</tbody>
+</table>
+<p>差不多了，需要注意的只是x.a=y和x=y是需要使用不同代码（分别是JsVar.SetProperty和JsClosure.Set）的。我估计这个diverge应该文法是可以做的。</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
