@@ -1,9 +1,10 @@
 function funcGen(i)
 {
-    return function()
+    var x=function()
     {
         console.log(i);
-    }
+    };
+    return x;
 }
 for (var i=0;i<5;i++)
     setTimeout(function()
