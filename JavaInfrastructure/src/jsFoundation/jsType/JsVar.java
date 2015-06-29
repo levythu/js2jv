@@ -85,6 +85,11 @@ public abstract class JsVar
 	{
 		throw new JsInvalidOperatorException();
 	}
+	public JsIntegral Mod(JsVar name) throws Exception
+	{
+		throw new JsInvalidOperatorException();
+	}
+	
 	public JsBoolean And(JsVar name) throws Exception
 	{
 		return new JsBoolean(this.ToBoolean()._getValue() && name.ToBoolean()._getValue());

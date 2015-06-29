@@ -1,8 +1,11 @@
 package jsFoundation.jsType;
 
+import jsFoundation.jsException.JsInvalidOperatorException;
+
 public abstract class JsNumber extends JsValue
 {
 	public abstract double Evaluate();
+	public abstract long EvaluateInt();
 	
 	public JsString TypeOf() 
 	{
@@ -86,5 +89,11 @@ public abstract class JsNumber extends JsValue
 		if ((this instanceof JsIntegral) && (name instanceof JsIntegral))
 			return new JsIntegral(((JsIntegral)name)._getValue()/((JsIntegral)this)._getValue());
 		return new JsFloat(((JsNumber)name).Evaluate()/this.Evaluate());
+	}
+	public JsIntegral Mod(JsVar name) throws Exception
+	{
+		if (!(name instanceof JsNumber))
+			throw new JsInvalidOperatorException();
+		return new JsIntegral(EvaluateInt()%((JsNumber)name).EvaluateInt());
 	}
 }

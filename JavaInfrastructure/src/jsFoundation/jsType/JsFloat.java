@@ -11,9 +11,15 @@ public class JsFloat extends JsNumber
 	{
 		value=val;
 	}
-	public double Evaluate() {
+	public double Evaluate() 
+	{
 		return value;
 	}
+	public long EvaluateInt()
+	{
+		return Math.round(value);
+	}
+	
 	
 	public JsValue Clone() {
 		return new JsFloat(value);

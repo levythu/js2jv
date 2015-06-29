@@ -14,6 +14,10 @@ public class JsIntegral extends JsNumber
 	public double Evaluate() {
 		return (double)value;
 	}
+	public long EvaluateInt()
+	{
+		return value;
+	}
 	
 	public JsValue Clone() 
 	{
