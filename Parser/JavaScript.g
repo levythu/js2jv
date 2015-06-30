@@ -35,10 +35,10 @@ options
 			char c0 = (i > 0) ? str.charAt(i - 1) : ' ';
 			char c = str.charAt(i);
 			char c1 = (i < str.length() - 1) ? str.charAt(i + 1) : ' ';
-			if (c == '(' && !(c0 == '\'' && c1 == '\'')) {
+			if (c == '(' && !(c0 == '\'' && c1 == '\'') && !(c0 == '\"' && c1 == '\"')) {
 				br++;
 			} 
-			if (c == ')' && !(c0 == '\'' && c1 == '\'')) {
+			if (c == ')' && !(c0 == '\'' && c1 == '\'') && !(c0 == '\"' && c1 == '\"')) {
 				br--;
 			}
 			if (c == '{')
@@ -83,10 +83,12 @@ program
 				"public class Javascript extends JsFunction {" + 
 				"public JsFunction GetDup() {return new Javascript();}" + 
 				"public String GetCanonicalName() {return \"test.Javascript.main\";}" +
+				"public static boolean alwaysTrue() {return true;}" +
 				"public static void main(String[] args) throws Throwable{" + 
 				"JsRuntime mn = new JsRuntime(new Javascript());mn.Run();" + "}" +
 				"public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception {" + 
-				$s.stat + (($s.returned==0)?"return new JsUndefined();":"") +"}" + $s.func + "}" ;
+				$s.stat + (($s.returned < 2)?"return new JsUndefined();":"") +"}" + 
+				(($s.func.startsWith("null")) ? "" : $s.func) + "}" ;
 		OutputFormattedTargetCode(code);
 	}
 	;
@@ -139,7 +141,8 @@ functionDeclaration returns [String code, String name]
 				"{" +
 				"public JsFunction GetDup()" + "{return new " + $Identifier.text + "();}" +
 				"public String GetCanonicalName()" +  "{return \"Js.Preclude." + $Identifier.text + "\";}" +
-				"public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception" + "{" + $formalParameterList.code + $functionBody.stat + (($functionBody.returned==0)?"return new JsUndefined();":"") +"}" + $functionBody.func + "}"
+				"public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception" + "{" + $formalParameterList.code + $functionBody.stat + (($functionBody.returned < 2)?"return new JsUndefined();":"") +"}" + 
+				(($functionBody.func.startsWith("null")) ? "" : $functionBody.func) + "}"
 				;
 	}
 	;
@@ -160,7 +163,8 @@ functionExpression returns [String code, String name]
 				"{" +
 				"public JsFunction GetDup()" + "{return new " + $name + "();}" +
 				"public String GetCanonicalName()" +  "{return \"Js.Preclude." + $name + "\";}" +
-				"public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception" + "{" + $formalParameterList.code + $functionBody.stat + (($functionBody.returned==0)?"return new JsUndefined();":"") +"}" + $functionBody.func + "}"
+				"public JsVar ExecuteDetail(JsClosure closureInfo) throws Exception" + "{" + $formalParameterList.code + $functionBody.stat + (($functionBody.returned < 2)?"return new JsUndefined();":"") +"}" + 
+				(($functionBody.func.startsWith("null")) ? "" : $functionBody.func) + "}"
 				;
 	}
 	;
@@ -334,6 +338,9 @@ emptyStatement
 	;
 	
 expressionStatement returns [String code, String func]
+@init{
+	$code = ""; $func="";
+}
 	: expression (LT | ';')! 
 	{
 		$code = $expression.code;
@@ -349,18 +356,31 @@ ifStatement returns [String code, String func]
 	{
 		$code += $a.code;
 		$func = $a.func + $b.func + $c.func;
+
 		String s = $b.code;
-		if (s.charAt(0) != '{') s = "{" + "closureInfo=JsClosure.foldClosure(closureInfo);{" + s + "}closureInfo=JsClosure.unfoldClosure(closureInfo);" + "}";
+		if (s.charAt(0) != '{') {
+			s = "{" + "closureInfo=JsClosure.foldClosure(closureInfo);{" + $b.code + "}closureInfo=JsClosure.unfoldClosure(closureInfo);" + "}";
+		} else {
+			s = "{" + "closureInfo=JsClosure.foldClosure(closureInfo);" + $b.code + "closureInfo=JsClosure.unfoldClosure(closureInfo);" + "}";
+		}
 		$code += "if (closureInfo.Get(\"" + $a.name + "\").ToBoolean()._getValue() == true) " + s;
+		
 		if (c != null) {
 			s = $c.code;
-			if (s.charAt(0) != '{') s = "{" + "closureInfo=JsClosure.foldClosure(closureInfo);{" + s + "}closureInfo=JsClosure.unfoldClosure(closureInfo);" + "}";
+			if (s.charAt(0) != '{') {
+				s = "{" + "closureInfo=JsClosure.foldClosure(closureInfo);{" + s + "}closureInfo=JsClosure.unfoldClosure(closureInfo);" + "}";
+			} else {
+				s = "{" + "closureInfo=JsClosure.foldClosure(closureInfo);" + s + "closureInfo=JsClosure.unfoldClosure(closureInfo);" + "}";
+			}
 			$code += "else" + s;
 		}
 	}
 	;
 	
 iterationStatement returns [String code, String func]
+@init{
+	$code=""; $func="";
+}
 	: doWhileStatement 
 	{
 		$code = $doWhileStatement.code;
@@ -387,7 +407,13 @@ doWhileStatement returns [String code, String func]
 		$func = $statement.func + $expression.func;
 		$code += "closureInfo=JsClosure.foldClosure(closureInfo);{";
 		$code += $expression.code;
-		$code += "do" + $statement.code + "while" + "(" + "closureInfo.Get(\"" + $expression.name + "\").ToBoolean()._getValue()==true" + ");";
+		String s = $statement.code;
+		if (s.charAt(0) == '{') 
+		{
+			s = s.substring(1, s.length() - 1);
+			s = "{" + s + $expression.code + "}";
+		}
+		$code += "do" + s + "while" + "(" + "closureInfo.Get(\"" + $expression.name + "\").ToBoolean()._getValue()==true" + ");";
 		$code += "}closureInfo=JsClosure.unfoldClosure(closureInfo);";
 	}
 	;
@@ -401,7 +427,13 @@ whileStatement returns [String code, String func]
 		$func = $expression.func + $statement.func;
 		$code += "closureInfo=JsClosure.foldClosure(closureInfo);{";
 		$code += $expression.code;
-		$code += "while(" + "closureInfo.Get(\"" + $expression.name + "\").ToBoolean()._getValue() == true" + ")" + $statement.code;
+		String s = $statement.code;
+		if (s.charAt(0) == '{') 
+		{
+			s = s.substring(1, s.length() - 1);
+			s = "{" + s + $expression.code + "}";
+		}
+		$code += "while(" + "closureInfo.Get(\"" + $expression.name + "\").ToBoolean()._getValue() == true" + ")" + s;
 		$code += "}closureInfo=JsClosure.unfoldClosure(closureInfo);";
 	}
 	;
@@ -468,7 +500,7 @@ returnStatement returns [String code]
 	: 'return' expression? 
 	{
 		$code += $expression.code;
-		$code += "return closureInfo.Get(\"" + $expression.name + "\");";
+		$code += "if(Javascript.alwaysTrue()) { return closureInfo.Get(\"" + $expression.name + "\"); } ";
 	} 
 	  (LT | ';')! 
 	;
@@ -476,15 +508,16 @@ returnStatement returns [String code]
 
 
 
-expression returns [String code, String name, String membername, String func]
+expression returns [String code, String name, String membername, String func, String membertype]
 @init {
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=assignmentExpression 
 	{
 		$code = $a.code;
 		$name = $a.name; 
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	} 
 	  (LT!* ',' LT!* b=assignmentExpression 
@@ -492,27 +525,36 @@ expression returns [String code, String name, String membername, String func]
 		$code += "," + $b.code; 
 		$name = $b.name; 
 		$membername = $b.membername;
+		$membertype = $b.membertype;
 		$func += $b.func;
 	}
 	  )*
 	;
 
 
-assignmentExpression returns [String code, String name, String membername, String func]
+assignmentExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code = ""; $name = ""; $membername = ""; $func="";
+	$code = ""; $name = ""; $membername = ""; $func=""; $membertype="";
 }
 	: d=conditionalExpression
 	{
 		$code = $d.code;
 		$name = $d.name;
 		$membername = $d.membername;
+		$membertype = $d.membertype;
 		$func = $d.func;
 
 		if ($membername != "")
 		{	
 			String na = GenerateName();
-			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")));";
+			if ($membertype == "variable") 
+			{
+				$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(closureInfo.Get(\"" + $membername + "\")));";
+			} 
+			else 
+			{
+				$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")));";
+			}
 			$name = na;
 			$membername = "";
 		}
@@ -522,6 +564,7 @@ assignmentExpression returns [String code, String name, String membername, Strin
 		$code = $c.code;
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func + $c.func;
 		
 		if ($membername == "")
@@ -566,9 +609,17 @@ assignmentExpression returns [String code, String name, String membername, Strin
 		if ($membername != "")
 		{	
 			String na = GenerateName();
-			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")));";
+			if ($membertype == "variable") 
+			{
+				$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(closureInfo.Get(\"" + $membername + "\")));";
+			} 
+			else 
+			{
+				$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")));";
+			}
 			$name = na;
 			$membername = "";
+			$membertype = "";
 		}
 
 	}
@@ -576,15 +627,16 @@ assignmentExpression returns [String code, String name, String membername, Strin
 
 
 
-leftHandSideExpression returns [String code, String name, String membername, String func]
+leftHandSideExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=callExpression 
 	{
 		$code = $a.code;
 		$name = $a.name; 
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	| b=memberExpression 
@@ -592,14 +644,15 @@ leftHandSideExpression returns [String code, String name, String membername, Str
 		$code = $b.code;
 		$name = $b.name; 
 		$membername = $b.membername;
+		$membertype = $b.membertype;
 		$func = $b.func;
 	}
 	;
 
 	
-memberExpression returns [String code, String name, String membername, String func]
+memberExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: (a=primaryExpression | f=functionExpression)
 	{
@@ -607,6 +660,7 @@ memberExpression returns [String code, String name, String membername, String fu
 			$code = $a.code;
 			$name = $a.name;
 			$membername = $a.membername;
+			$membertype = $a.membertype;
 			$func = $a.func;
 		} else if (f != null) {
 			$code = "closureInfo.FunctionDeclare(\"" + $f.name + "\", new " + $f.name + "());";
@@ -616,40 +670,56 @@ memberExpression returns [String code, String name, String membername, String fu
 	} 
 	  (LT!* b=memberExpressionSuffix
 	{
+		$code += $b.code;
 		String na = GenerateName();
 		if ($membername != "") {
-			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")));";
+			if ($membertype == "variable") 
+			{
+				$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(closureInfo.Get(\"" + $membername + "\")));";
+			} 
+			else 
+			{
+				$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")));";
+			}
 		} else {
 			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\"));";
 		}
 		$name = na;
 		$membername = $b.membername;
+		$membertype = $b.membertype;
 	}
 	  )*
 	;
 
 
-memberExpressionSuffix returns [String membername]
+memberExpressionSuffix returns [String code, String membername, String membertype]
+@init{
+	$code=""; $membername="";
+}
 	: a=indexSuffix 
 	{
 		$membername = $a.membername;
+		$code = $a.code;
+		$membertype = "variable";
 	}
 	| b=propertyReferenceSuffix 
 	{
 		$membername = $b.membername;
+		$membertype = "string";
 	}
 	;
 
 
-callExpression returns [String code, String name, String membername, String func]
+callExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=memberExpression
 	{
 		$code = $a.code;
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  LT!* b=arguments
@@ -658,12 +728,13 @@ callExpression returns [String code, String name, String membername, String func
 		$func += $b.func;
 		String na = GenerateName();
 		if ($membername != "") {
-			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")).Execute(" + $b.name + "));";
+			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")).Execute(" + "(JsList)closureInfo.Get(\"" + $b.name + "\")" + "));";
 		} else {
-			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").Execute(" + $b.name + "));";
+			$code += "closureInfo.Set(\"" + na + "\"," + "closureInfo.Get(\"" + $name + "\").Execute(" + "(JsList)closureInfo.Get(\"" + $b.name + "\")" + "));";
 		}	
 		$name = na;
 		$membername = "";
+		$membertype = "";
 	}
 	;
 
@@ -671,27 +742,28 @@ callExpression returns [String code, String name, String membername, String func
 arguments returns [String code, String name, String func]
 @init{
 	$name = GenerateName();
-	$code = "JsList " + $name + " = " + "new JsList();";
+	$code = "closureInfo.Declare(\"" + $name + "\", new JsList());";
 	$func = "";
 }
 	: '(' (LT!* a=assignmentExpression
 	{
-		$code += $a.code + $name + "._push(" + "closureInfo.Get(\"" + $a.name + "\")" + ");";
+		$code += $a.code + "((JsList)(closureInfo.Get(\"" + $name + "\")))" + "._push(" + "closureInfo.Get(\"" + $a.name + "\")" + ");";
 		$func = $a.func;
 	}
 	  (LT!* ',' LT!* b=assignmentExpression
 	{
-		$code += $b.code + $name + "._push(" + "closureInfo.Get(\"" + $b.name + "\")" + ");";
+		$code += $b.code + "((JsList)(closureInfo.Get(\"" + $name + "\")))" + "._push(" + "closureInfo.Get(\"" + $b.name + "\")" + ");";
 		$func += $b.func;
 	}
 	  )*)? LT!* ')'
 	;
 
 	
-indexSuffix returns [String membername]
+indexSuffix returns [String code, String membername]
 	: '[' LT!* a=assignmentExpression LT!* ']' 
 	{
 		$membername = $a.name;
+		$code = $a.code;
 	}
 	;	
 	
@@ -716,15 +788,16 @@ assignmentOperator returns [int type]
 
 
 
-conditionalExpression returns [String code, String name, String membername, String func]
+conditionalExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=logicalORExpression
 	{
 		$code = $a.code;
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	| d=logicalORExpression LT!* '?' LT!* b=assignmentExpression LT!* ':' LT!* c=assignmentExpression
@@ -740,7 +813,7 @@ conditionalExpression returns [String code, String name, String membername, Stri
 	;
 
 
-logicalORExpression returns [String code, String name, String membername, String func]
+logicalORExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
 	$code=""; $name=""; $membername=""; $func="";
 }
@@ -749,6 +822,7 @@ logicalORExpression returns [String code, String name, String membername, String
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  (LT!* '||' LT!* b=logicalANDExpression 
@@ -763,7 +837,7 @@ logicalORExpression returns [String code, String name, String membername, String
 	;
 
 	
-logicalANDExpression returns [String code, String name, String membername, String func]
+logicalANDExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
 	$code=""; $name=""; $membername=""; $func="";
 }
@@ -772,6 +846,7 @@ logicalANDExpression returns [String code, String name, String membername, Strin
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  (LT!* '&&' LT!* b=equalityExpression
@@ -786,15 +861,16 @@ logicalANDExpression returns [String code, String name, String membername, Strin
 	;
 
 	
-equalityExpression returns [String code, String name, String membername, String func]
+equalityExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=relationalExpression
 	{
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  (LT!* op=equalityOperator LT!* b=relationalExpression
@@ -825,15 +901,16 @@ equalityOperator returns [int type]
 	| '!==' {$type = 3;}
 	;
 	
-relationalExpression returns [String code, String name, String membername, String func]
+relationalExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=additiveExpression 
 	{
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  (LT!* op=relationalOperator  LT!* b=additiveExpression
@@ -845,12 +922,12 @@ relationalExpression returns [String code, String name, String membername, Strin
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").LessThan(closureInfo.Get(\"" + $b.name + "\")));";
 		} else if ($op.type == 1) {
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").LessThan(closureInfo.Get(\"" + $b.name + "\")));";
-			$code += "closureInfo.Set(\"" + "temp" + "\" ,closureInfo.Get(\"" + $name + "\").Identical(closureInfo.Get(\"" + $b.name + "\")));";
+			$code += "closureInfo.Set(\"" + "temp" + "\" ,closureInfo.Get(\"" + $name + "\").IdenticalTo(closureInfo.Get(\"" + $b.name + "\")));";
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + na + "\").Or(closureInfo.Get(\"" + "temp" + "\")));";
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + na + "\").Exclaimation());";
 		} else if ($op.type == 2) {
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").LessThan(closureInfo.Get(\"" + $b.name + "\")));";
-			$code += "closureInfo.Set(\"" + "temp" + "\" ,closureInfo.Get(\"" + $name + "\").Identical(closureInfo.Get(\"" + $b.name + "\")));";
+			$code += "closureInfo.Set(\"" + "temp" + "\" ,closureInfo.Get(\"" + $name + "\").IdenticalTo(closureInfo.Get(\"" + $b.name + "\")));";
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + na + "\").Or(closureInfo.Get(\"" + "temp" + "\")));";
 		} else if ($op.type == 3) {
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").LessThan(closureInfo.Get(\"" + $b.name + "\")));";
@@ -869,15 +946,16 @@ relationalOperator returns [int type]
 	| '>=' {$type = 3;}
 	;
 
-additiveExpression returns [String code, String name, String membername, String func]
+additiveExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=multiplicativeExpression 
 	{
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  (LT!* op=additiveOperator LT!* b=multiplicativeExpression
@@ -886,7 +964,7 @@ additiveExpression returns [String code, String name, String membername, String 
 		$func += $b.func;
 		String na = GenerateName();
 		if ($op.type == 0) {
-			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").Plus(closureInfo.Get(\"" + $b.name + "\")));";			
+			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").Plus(closureInfo.Get(\"" + $b.name + "\")));";
 		} if ($op.type == 1) {
 			$code += "closureInfo.Set(\"" + na + "\" ,closureInfo.Get(\"" + $name + "\").Minus(closureInfo.Get(\"" + $b.name + "\")));";
 		}
@@ -900,15 +978,16 @@ additiveOperator returns [int type]
 	| '-' {$type = 1;}
 	;
 
-multiplicativeExpression returns [String code, String name, String membername, String func]
+multiplicativeExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=unaryExpression 
 	{
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	  (LT!* op=multiplicativeOperator LT!* b=unaryExpression
@@ -934,15 +1013,16 @@ multiplicativeOperator returns [int type]
 	| '%' {$type = 2;}
 	;
 
-unaryExpression returns [String code, String name, String membername, String func]
+unaryExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=postfixExpression 
 	{
 		$code = $a.code; 
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	| '++' b=unaryExpression
@@ -953,15 +1033,16 @@ unaryExpression returns [String code, String name, String membername, String fun
 		$code = $e.code;
 		$name = $e.name;
 		$membername = $e.membername;
+		$membertype = $e.membertype;
 		$func = $e.func;
 		$code += "closureInfo.Set(\"" + $name + "\", closureInfo.Get(\"" + $name + "\").Asterisk(new JsIntegral(-1)));";
 	}
 	| '!' f=unaryExpression
 	;
 
-postfixExpression returns [String code, String name, String membername, String func]
+postfixExpression returns [String code, String name, String membername, String func, String membertype]
 @init{
-	$code=""; $name=""; $membername=""; $func="";
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: a=leftHandSideExpression b=postfixOperator?
 	{
@@ -970,6 +1051,7 @@ postfixExpression returns [String code, String name, String membername, String f
 			$code = $a.code;
 			$name = $a.name;
 			$membername = $a.membername;
+			$membertype = $a.membertype;
 			$func = $a.func;
 			if ($membername != "") {
 				$code += "closureInfo.Set(\"" + $name + "\", closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")).Plus(new JsIntegral(1)));";
@@ -982,6 +1064,7 @@ postfixExpression returns [String code, String name, String membername, String f
 			$code = $a.code;
 			$name = $a.name;
 			$membername = $a.membername;
+			$membertype = $a.membertype;
 			$func = $a.func;
 			if ($membername != "") {
 				$code += "closureInfo.Set(\"" + $name + "\", closureInfo.Get(\"" + $name + "\").GetProperty(new JsString(\"" + $membername + "\")).Minus(new JsIntegral(1)));";
@@ -994,6 +1077,7 @@ postfixExpression returns [String code, String name, String membername, String f
 			$code = $a.code; 
 			$name = $a.name; 
 			$membername = $a.membername;
+			$membertype = $a.membertype;
 			$func = $a.func;
 		}
 	}
@@ -1005,9 +1089,9 @@ postfixOperator returns [int type]
 	;
 
 
-primaryExpression returns [String code, String name, String membername, String func]
-@init{
-	$code=""; $name=""; $membername=""; $func="";
+primaryExpression returns [String code, String name, String membername, String func, String membertype]
+@init{ 
+	$code=""; $name=""; $membername=""; $func=""; $membertype="";
 }
 	: Identifier
 	{
@@ -1019,7 +1103,13 @@ primaryExpression returns [String code, String name, String membername, String f
 		if ($literal.type == "number") {
 			$code += "closureInfo.Declare(\"" + $name + "\", JsNumber.initLiteral(" + $literal.value + "));";
 		} else if ($literal.type == "string") {
-			$code += "closureInfo.Declare(\"" + $name + "\", new JsString(" + $literal.value + "));";
+			String s = $literal.value;
+			if (s.charAt(0) == '\'')
+			{
+				s = s.substring(1, s.length() - 1);
+				s = "\"" + s + "\"";
+			}
+			$code += "closureInfo.Declare(\"" + $name + "\", new JsString(" + s + "));";
 		} else if ($literal.type == "boolean") {
 			$code += "closureInfo.Declare(\"" + $name + "\", new JsBoolean(" + $literal.value + "));";
 		} else if ($literal.type == "null") {
@@ -1031,6 +1121,7 @@ primaryExpression returns [String code, String name, String membername, String f
 		$code = $a.code;
 		$name = $a.name;
 		$membername = $a.membername;
+		$membertype = $a.membertype;
 		$func = $a.func;
 	}
 	| d=arrayLiteral

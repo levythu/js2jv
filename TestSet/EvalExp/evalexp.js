@@ -1,19 +1,18 @@
 function isOperator(val)
 {
 	var OperatorStr = "+-*/()";
-	return OperatorStr.indexOf(val)>-1;
+	return OperatorStr.indexOf(val) > -1;
 }
 
 function getPriority(val)
 {
-	switch(val)
-	{
-		case '+':
-		case '-': return 1;
-		case '*':
-		case '/': return 2;
-		default: return 0;
-	}
+    if (val == '-' || val == '+') {
+        return 1;
+    } else if (val == '/' || val == '*') {
+        return 2;
+    } else {
+        return 0;
+    }
 }
 
 function comparePri(op1,op2)
@@ -27,13 +26,15 @@ function dal2Rpn(exp)
 	var outputStack = [];
 	var outputExp = [];
 
-	for (var i = 0; i < exp.length; i++) {
+    var t = exp.length;
+	for (var i = 0; i < t; i++) {
 		var c = exp[i];
 		if(c!=' ')
 			inputExp.push(c);
 	};
 
-	while(inputExp.length>0)
+    var t1 = inputExp.length;
+	while(t1 > 0)
 	{
 		cur = inputExp.shift();
 		if(isOperator(cur))
@@ -46,10 +47,12 @@ function dal2Rpn(exp)
         	else if(cur == ')')
         	{
         		var top = outputStack.pop();
-        		while(top!='('&&outputStack.length>0)
-        		{
+                var t2 = outputStack.length;
+        		while(top != '(' && t2 > 0)
+        		{ 
         			outputExp.push(top);
         			top = outputStack.pop();
+                    t2 = outputStack.length;
         		}
         		if (top!='(')
         		{
@@ -59,27 +62,33 @@ function dal2Rpn(exp)
         	}
         	else
         	{
-        		while(comparePri(cur,outputStack[outputStack.length-1])&&outputStack.length>0)
+                var t3 = outputStack.length;
+        		while(comparePri(cur,outputStack[t3 - 1]) && t3 > 0)
         		{
         			outputExp.push(outputStack.pop());
-
+                    t3 = outputStack.length;
         		}
         		outputStack.push(cur);
         	}
 		}
 		else
 		{
-			outputExp.push(-(-cur));
+			outputExp.push(0-(0-cur));
 		}
+        t1 = inputExp.length;
 	}
 
-	if(outputStack.length > 0){
-        if(outputStack[outputStack.length - 1] == ')' || outputStack[outputStack.length - 1] == '('){
+    var t4 = outputStack.length;
+	if(t4 > 0){
+        var b1 = outputStack[t4 - 1];
+        if(b1 == ')' || b1 == '(') {
             console.log("error: unmatched ()");
             process.exit(-1);
         }
-        while(outputStack.length > 0){
+        var t5 = outputStack.length;
+        while(t5 > 0){
             outputExp.push(outputStack.pop());
+            t5 = outputStack.length;
         }
     }
     return outputExp;
@@ -87,13 +96,15 @@ function dal2Rpn(exp)
 
 function evalRpn(rpnQueue){
     var outputStack = [];
-    while(rpnQueue.length > 0){
+    var t6 = rpnQueue.length;
+    while(t6 > 0){
         var cur = rpnQueue.shift();
 
-        if(!isOperator(cur)){
+        if(isOperator(cur) == false){
             outputStack.push(cur);
         }else{
-            if(outputStack.length < 2){
+            var t7 = outputStack.length;
+            if(t7 < 2){
                 console.log("invalid stack length");
                 process.exit(-1);
             }
@@ -102,9 +113,11 @@ function evalRpn(rpnQueue){
 
             outputStack.push(getResult(fir, sec, cur));
         }
+        t6 = rpnQueue.length;
     }
 
-    if(outputStack.length != 1){
+    var t8 = outputStack.length;
+    if(t8 != 1){
         console.log("invalid exp");
         process.exit(-1);
     }else{
@@ -120,21 +133,28 @@ function calculate(exp)
 
 function getResult(a,b,op)
 {
-    switch(op)
-    {
-        case'+': return a+b;
-        case'-': return a-b;
-        case'*': return a*b;
-        case'/':
-            if(b!=0)
-                return a/b;
-            else
-            {
-                console.log("invalid divisor");
-                process.exit(-1);
-            }
+    if (op == '+') {
+        return a + b;
+    } else if (op == '-') {
+        return a - b;
+    } else if (op == '*') {
+        return a * b;
+    } else {
+        if(b!=0) {
+            return a/b;
+        } else {
+            console.log("invalid divisor");
+            process.exit(-1);
+        }
     }
 }
 
+console.log(calculate('1 + 2'));
+console.log(calculate('6 / 3'));
+console.log(calculate('5 / 3'));
+console.log(calculate('5 * 3'));
+console.log(calculate('5 - 3'));
 console.log(calculate('1 + 2 * (3 - 4) / 5+6/5'));
 console.log(calculate('( 1 + 2 ) * (( 3 - 4 ) / 5)'));
+
+process.exit(0);

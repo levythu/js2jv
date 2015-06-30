@@ -87,7 +87,7 @@ public abstract class JsNumber extends JsValue
 		if (!(name instanceof JsNumber))
 			return name.BeSlash(this);
 		if ((this instanceof JsIntegral) && (name instanceof JsIntegral))
-			return new JsIntegral(((JsIntegral)this)._getValue()/((JsIntegral)name)._getValue());
+			return new JsFloat(((JsIntegral)this)._getValue()*1.0/((JsIntegral)name)._getValue());
 		return new JsFloat(this.Evaluate()/((JsNumber)name).Evaluate());
 	}
 	public JsVar BeSlash(JsVar name) throws Exception
@@ -95,7 +95,7 @@ public abstract class JsNumber extends JsValue
 		if (!(name instanceof JsNumber))
 			return name.Slash(this);
 		if ((this instanceof JsIntegral) && (name instanceof JsIntegral))
-			return new JsIntegral(((JsIntegral)name)._getValue()/((JsIntegral)this)._getValue());
+			return new JsFloat(((JsIntegral)name)._getValue()*1.0/((JsIntegral)this)._getValue());
 		return new JsFloat(((JsNumber)name).Evaluate()/this.Evaluate());
 	}
 	public JsIntegral Mod(JsVar name) throws Exception

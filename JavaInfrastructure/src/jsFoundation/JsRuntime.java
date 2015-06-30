@@ -18,6 +18,10 @@ public class JsRuntime
 		precludeClosure=new JsClosure(null);
 		JsFunctionSchedular.initSchedular();
 	}
+	public static boolean alwaysTrue()
+	{
+		return true;
+	}
 	
 	private void preparePreClosure()
 	{
