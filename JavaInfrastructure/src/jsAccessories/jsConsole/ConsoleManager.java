@@ -38,7 +38,7 @@ public class ConsoleManager
 			
 			if (para.value.size()<1)
 				return JsUndefined.getInstance();
-			System.out.print(para.value.get(0).ToString()._getValue());
+			System.out.println(para.value.get(0).ToString()._getValue());
 			return JsUndefined.getInstance();
 		}
 	}
@@ -58,7 +58,7 @@ public class ConsoleManager
 			
 			if (para.value.size()<1)
 				return JsUndefined.getInstance();
-			System.err.print(para.value.get(0).ToString()._getValue());
+			System.err.println(para.value.get(0).ToString()._getValue());
 			return JsUndefined.getInstance();
 		}
 	}

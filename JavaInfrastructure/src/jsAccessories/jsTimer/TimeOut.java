@@ -30,11 +30,11 @@ public class TimeOut
 				return new JsIntegral(0);
 			if (!(para.value.get(0) instanceof JsFunction))
 				return new JsIntegral(0);
-			if (!(para.value.get(1) instanceof JsIntegral))
+			if (!(para.value.get(1) instanceof JsNumber))
 				return new JsIntegral(0);
 			JsFunction cb=(JsFunction)para.value.get(0);
-			JsIntegral tm=(JsIntegral)para.value.get(1);
-			long dura=tm._getValue();
+			JsNumber tm=(JsNumber)para.value.get(1);
+			long dura=tm.EvaluateInt();
 			if (dura<0) dura=0;
 			
 			cb=JsFunction.dup(cb, JsUndefined.getInstance());

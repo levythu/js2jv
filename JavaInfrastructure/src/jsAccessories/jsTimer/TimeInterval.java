@@ -1,6 +1,7 @@
 package jsAccessories.jsTimer;
 
 import java.util.HashMap;
+
 import jsFoundation.JsClosure;
 import jsFoundation.jsScheduler.JsDelegate;
 import jsFoundation.jsScheduler.JsFunctionSchedular;
@@ -8,6 +9,7 @@ import jsFoundation.jsScheduler.JsTask;
 import jsFoundation.jsType.JsFunction;
 import jsFoundation.jsType.JsIntegral;
 import jsFoundation.jsType.JsList;
+import jsFoundation.jsType.JsNumber;
 import jsFoundation.jsType.JsUndefined;
 import jsFoundation.jsType.JsVar;
 
@@ -34,11 +36,11 @@ public class TimeInterval
 				return new JsIntegral(0);
 			if (!(para.value.get(0) instanceof JsFunction))
 				return new JsIntegral(0);
-			if (!(para.value.get(1) instanceof JsIntegral))
+			if (!(para.value.get(1) instanceof JsNumber))
 				return new JsIntegral(0);
 			JsFunction cb=(JsFunction)para.value.get(0);
-			JsIntegral tm=(JsIntegral)para.value.get(1);
-			long dura=tm._getValue();
+			JsNumber tm=(JsNumber)para.value.get(1);
+			long dura=tm.EvaluateInt();
 			if (dura<0) dura=0;
 			
 			cb=JsFunction.dup(cb, JsUndefined.getInstance());

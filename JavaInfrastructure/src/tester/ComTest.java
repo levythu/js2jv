@@ -26,6 +26,9 @@ public class ComTest extends JsFunction
 		closureInfo=JsClosure.foldClosure(closureInfo);
 		{
 			closureInfo.FunctionDeclare("Gener", new Gener());
+			JsVar x12=JsNumber.initLiteral(12);
+			x12=JsNumber.initLiteral(1.2);
+			x12=JsNumber.initLiteral(1.0);
 			closureInfo.Declare("i", new JsIntegral(10086));
 			closureInfo.Get("console").GetProperty("readline").Execute(
 					new JsList(closureInfo.Get("Gener").Execute(

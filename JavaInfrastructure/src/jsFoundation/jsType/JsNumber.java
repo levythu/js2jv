@@ -6,6 +6,14 @@ public abstract class JsNumber extends JsValue
 {
 	public abstract double Evaluate();
 	public abstract long EvaluateInt();
+	public static JsNumber initLiteral(long num)
+	{
+		return new JsIntegral(num);
+	}
+	public static JsNumber initLiteral(double num)
+	{
+		return new JsFloat(num);
+	}
 	
 	public JsString TypeOf() 
 	{

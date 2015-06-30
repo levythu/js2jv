@@ -27,9 +27,9 @@ public class JsCarryThread extends Thread
 			{
 				try
 				{
-					System.out.println("++ Function <"+func.delegateContent.GetCanonicalName()+"> starts to run.");
+					//System.out.println("++ Function <"+func.delegateContent.GetCanonicalName()+"> starts to run.");
 					func.delegateContent.Execute(func.para);
-					System.out.println("++ Function <"+func.delegateContent.GetCanonicalName()+"> exits without exception.");
+					//System.out.println("++ Function <"+func.delegateContent.GetCanonicalName()+"> exits without exception.");
 				}
 				catch (Throwable e)
 				{
